@@ -1,8 +1,8 @@
-import "./Avatar.css";
+import { AvatarProps } from '../../../types/types';
 
-import { AvatarProps } from "../../../types/types";
+import './Avatar.css';
 
-const Avatar = ({ avatar }: {avatar: AvatarProps}) => {
+const Avatar = ({ avatar }: { avatar: AvatarProps }) => {
   return (
     <div className={'avatar' + (avatar.className || '')} style={avatar.style}>
       <img

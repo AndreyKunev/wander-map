@@ -1,9 +1,8 @@
-import "./UsersList.css";
+import { UserInfoList } from '../../types/types';
 
-import { UserInfoList } from "../../types/types";
+import UserItem from './UserItem/UserItem';
 
-import UserItem from "./UserItem/UserItem";
-
+import './UsersList.css';
 
 const UsersList = ({ userArr }: { userArr: UserInfoList }) => {
   if (userArr.length === 0) {
