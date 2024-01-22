@@ -1,5 +1,6 @@
 import { UserInfoList } from '../../types/types';
 
+import Card from './Card/Card';
 import UserItem from './UserItem/UserItem';
 
 import './UsersList.css';
@@ -8,7 +9,9 @@ const UsersList = ({ userArr }: { userArr: UserInfoList }) => {
   if (userArr.length === 0) {
     return (
       <div className="center">
-        <h2>No users found.</h2>
+        <Card>
+          <h2>No users found.</h2>
+        </Card>
       </div>
     );
   }

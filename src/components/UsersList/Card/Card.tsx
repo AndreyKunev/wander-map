@@ -3,7 +3,7 @@ import React, { CSSProperties, ReactNode } from 'react';
 import './Card.css';
 
 const Card: React.FC<{
-  className: string;
+  className?: string;
   style?: CSSProperties;
   children?: ReactNode;
 }> = ({ className, style, children }) => {
