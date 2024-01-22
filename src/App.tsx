@@ -1,12 +1,21 @@
-import './App.css'
+import "./App.css";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route
+} from "react-router-dom";
+
+import Users from "./pages/Users/Users";
+
+const appRoutes =  createBrowserRouter(
+  createRoutesFromElements(
+    <Route path='/' element={<Users />}/>
+  )
+)
 
 function App() {
-
-  return (
-    <div>
-        Hello!
-    </div>
-  )
+  return <RouterProvider router={appRoutes} />;
 }
 
-export default App
+export default App;
