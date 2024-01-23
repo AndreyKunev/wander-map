@@ -1,6 +1,6 @@
 import { UserInfoList } from '../../types/types';
 
-import Card from './Card/Card';
+import Card from '../Card/Card';
 import UserItem from './UserItem/UserItem';
 
 import './UsersList.css';

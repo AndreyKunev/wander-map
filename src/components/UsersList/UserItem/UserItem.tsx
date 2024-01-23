@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 import { AvatarProps, UserInfo } from '../../../types/types';
 
-import Avatar from '../Avatar/Avatar';
-import Card from '../Card/Card';
+import Avatar from '../../Avatar/Avatar';
+import Card from '../../Card/Card';
 
 import './UserItem.css';
 
