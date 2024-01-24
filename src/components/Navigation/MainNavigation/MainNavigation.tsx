@@ -11,20 +11,20 @@ import './MainNavigation.css';
 const MainNavigation = (props) => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
-  const toggleDrawer = () => {
+  const toggleDrawerHandler = () => {
     setDrawerIsOpen(!drawerIsOpen);
   }
 
   return (
   <>
-  {drawerIsOpen && <Backdrop onClick={toggleDrawer} />}
-    <SideDrawer show={drawerIsOpen} onClick={toggleDrawer}>
+  {drawerIsOpen && <Backdrop onClick={toggleDrawerHandler} />}
+    <SideDrawer show={drawerIsOpen} onClick={toggleDrawerHandler}>
       <nav className='main-navigation__drawer-nav'>
         <NavLinks />
       </nav>
     </SideDrawer>
     <MainHeader>
-      <button className="main-navigation__menu-btn" onClick={toggleDrawer}>
+      <button className="main-navigation__menu-btn" onClick={toggleDrawerHandler}>
         <span />
         <span />
         <span />
