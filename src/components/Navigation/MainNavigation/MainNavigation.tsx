@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import MainHeader from '../MainHeader';
 import NavLinks from '../NavLinks/NavLinks';
 import SideDrawer from '../SideDrawer/SideDrawer';
+import Backdrop from '../../Backdrop/Backdrop';
 
 import './MainNavigation.css';
-import { useState } from 'react';
 
 const MainNavigation = (props) => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
@@ -16,11 +17,12 @@ const MainNavigation = (props) => {
 
   return (
   <>
-    {drawerIsOpen && <SideDrawer>
+  {drawerIsOpen && <Backdrop onClick={toggleDrawer} />}
+    <SideDrawer show={drawerIsOpen} onClick={toggleDrawer}>
       <nav className='main-navigation__drawer-nav'>
         <NavLinks />
       </nav>
-    </SideDrawer>}
+    </SideDrawer>
     <MainHeader>
       <button className="main-navigation__menu-btn" onClick={toggleDrawer}>
         <span />
