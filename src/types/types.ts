@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from 'react';
 
 export type UserInfo = {
   id: string;
@@ -16,3 +16,18 @@ export type AvatarProps = {
   style?: CSSProperties;
   width?: string;
 };
+
+export type UserPlace = {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  address: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  creator: string;
+};
+
+export type UserPlaceArray = UserPlace[];
