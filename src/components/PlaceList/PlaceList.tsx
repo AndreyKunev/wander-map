@@ -8,7 +8,6 @@ import { UserPlaceArray } from '../../types/types';
 import './PlaceList.css';
 
 const PlaceList: FC<{ placeArr: UserPlaceArray }> = ({ placeArr }) => {
-  console.log(placeArr);
 
   if (placeArr.length === 0) {
     return (
