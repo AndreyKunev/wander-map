@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AvatarProps, UserInfo } from '../../../types/types';
@@ -7,7 +8,7 @@ import Card from '../../Card/Card';
 
 import './UserItem.css';
 
-const UserItem = ({ user }: { user: UserInfo }) => {
+const UserItem: FC<{ user: UserInfo }> = ({ user }) => {
   const avatarProps: AvatarProps = {
     image: user.image,
     alt: user.name,

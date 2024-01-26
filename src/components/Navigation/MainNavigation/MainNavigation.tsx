@@ -8,7 +8,7 @@ import Backdrop from '../../Backdrop/Backdrop';
 
 import './MainNavigation.css';
 
-const MainNavigation = (props) => {
+const MainNavigation = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
   const toggleDrawerHandler = () => {

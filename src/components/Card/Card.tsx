@@ -1,8 +1,8 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode, FC } from 'react';
 
 import './Card.css';
 
-const Card: React.FC<{
+const Card: FC<{
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;

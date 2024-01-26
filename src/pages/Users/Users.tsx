@@ -4,7 +4,7 @@ const Users = () => {
   // dummy data
   const USERS = [
     {
-      id: "a1",
+      id: "u1",
       name: "John Doe",
       image:
         "https://images.pexels.com/photos/2167039/pexels-photo-2167039.jpeg",
