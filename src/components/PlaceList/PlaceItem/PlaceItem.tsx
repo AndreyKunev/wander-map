@@ -1,30 +1,51 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import Card from '../../Card/Card';
 import Button from '../../FormElements/Button/Button';
+import Modal from '../../Modal/Modal';
 
 import './PlaceItem.css';
 import { UserPlace } from '../../../types/types';
 
 const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
+  const [showMap, setShowMap] = useState(false);
+
+  const toggleMapHandler = () => setShowMap(!showMap);
+
   return (
-    <li className="place-item">
-      <Card className="place-item__content">
-        <div className="place-item__image">
-          <img src={place.imageUrl} alt={place.title} />
+    <>
+      <Modal
+        show={showMap}
+        onCancel={toggleMapHandler}
+        header={place.address}
+        contentClass="place-item__modal-content"
+        footerClass="place-item__modal-actions"
+        footer={<Button onClick={toggleMapHandler}>Close</Button>}
+      >
+        <div className="map-container">
+          <h2>Map</h2>
         </div>
-        <div className="place-item__info">
-          <h2>{place.title}</h2>
-          <h3>{place.address}</h3>
-          <p>{place.description}</p>
-        </div>
-        <div className="place-item__actions">
-          <Button inverse>View on Map</Button>
-          <Button to={`/places/${place.id}`}>Edit</Button>
-          <Button danger>Delete</Button>
-        </div>
-      </Card>
-    </li>
+      </Modal>
+      <li className="place-item">
+        <Card className="place-item__content">
+          <div className="place-item__image">
+            <img src={place.imageUrl} alt={place.title} />
+          </div>
+          <div className="place-item__info">
+            <h2>{place.title}</h2>
+            <h3>{place.address}</h3>
+            <p>{place.description}</p>
+          </div>
+          <div className="place-item__actions">
+            <Button inverse onClick={toggleMapHandler}>
+              View on Map
+            </Button>
+            <Button to={`/places/${place.id}`}>Edit</Button>
+            <Button danger>Delete</Button>
+          </div>
+        </Card>
+      </li>
+    </>
   );
 };
 
