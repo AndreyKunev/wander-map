@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode, MouseEvent } from 'react';
 
 export type UserInfo = {
   id: string;
@@ -31,3 +31,15 @@ export type UserPlace = {
 };
 
 export type UserPlaceArray = UserPlace[];
+
+export type ButtonProps = {
+  size?: 'default' | 'small' | 'big';
+  inverse?: boolean;
+  danger?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  href?: string;
+  to?: string;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
+  children: ReactNode;
+};
