@@ -1,6 +1,19 @@
 import ReactDOM from 'react-dom';
+import { FC } from 'react';
 
-const ModalOverlay = (props) => {
+import { ModalProps } from '../../types/types';
+
+const ModalOverlay: FC<ModalProps> = ({
+  className,
+  style,
+  headerClass,
+  header,
+  onSubmit,
+  contentClass,
+  children,
+  footerClass,
+  footer
+}) => {
   const targetElement = document.getElementById('modal-hook');
 
   if (!targetElement) {
@@ -9,20 +22,20 @@ const ModalOverlay = (props) => {
   }
 
   const content = (
-    <div className={`modal ${props.className}`} style={props.style}>
-      <header className={`modal__header ${props.headerClass}`}>
-        <h2>{props.header}</h2>
+    <div className={`modal ${className}`} style={style}>
+      <header className={`modal__header ${headerClass}`}>
+        <h2>{header}</h2>
       </header>
       <form
         onSubmit={
-          props.onSubmit ? props.onSubmit : (event) => event.preventDefault()
+          onSubmit ? onSubmit : (event) => event.preventDefault()
         }
       >
-        <div className={`modal_content ${props.contentClass}`}>
-          {props.children}
+        <div className={`modal_content ${contentClass}`}>
+          {children}
         </div>
-        <footer className={`modal_footer ${props.footerClass}`}>
-          {props.footer}
+        <footer className={`modal_footer ${footerClass}`}>
+          {footer}
         </footer>
       </form>
     </div>
