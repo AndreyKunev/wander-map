@@ -1,4 +1,9 @@
-import { CSSProperties, ReactNode, MouseEvent } from 'react';
+import {
+  CSSProperties,
+  ReactNode,
+  MouseEvent,
+  ReactEventHandler,
+} from 'react';
 
 export type UserInfo = {
   id: string;
@@ -42,4 +47,18 @@ export type ButtonProps = {
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   children: ReactNode;
+};
+
+export type ModalProps = {
+  show: boolean;
+  onCancel: ReactEventHandler;
+  className?: string;
+  style?: CSSProperties;
+  headerClass?: string;
+  header: string;
+  onSubmit?: () => void;
+  contentClass: string;
+  children: ReactNode;
+  footerClass: string;
+  footer: ReactNode;
 };

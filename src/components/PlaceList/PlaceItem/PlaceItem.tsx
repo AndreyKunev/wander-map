@@ -5,6 +5,7 @@ import Button from '../../FormElements/Button/Button';
 import Modal from '../../Modal/Modal';
 
 import './PlaceItem.css';
+
 import { UserPlace } from '../../../types/types';
 
 const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
