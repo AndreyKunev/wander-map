@@ -3,11 +3,11 @@ import { FC, useState } from 'react';
 import Card from '../../Card/Card';
 import Button from '../../FormElements/Button/Button';
 import Modal from '../../Modal/Modal';
+import Map from '../../Map/Map';
 
 import './PlaceItem.css';
 
 import { UserPlace } from '../../../types/types';
-import Map from '../../Map/Map';
 
 const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
   const [showMap, setShowMap] = useState(false);

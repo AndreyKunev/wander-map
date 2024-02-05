@@ -62,3 +62,13 @@ export type ModalProps = {
   footerClass: string;
   footer: ReactNode;
 };
+
+export type MapProps = {
+  className?: string;
+  style?: CSSProperties;
+  center: {
+    lat: number;
+    lng: number;
+  };
+  zoom: number;
+}
