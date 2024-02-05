@@ -7,6 +7,7 @@ import Modal from '../../Modal/Modal';
 import './PlaceItem.css';
 
 import { UserPlace } from '../../../types/types';
+import Map from '../../Map/Map';
 
 const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
   const [showMap, setShowMap] = useState(false);
@@ -24,7 +25,7 @@ const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
         footer={<Button onClick={toggleMapHandler}>Close</Button>}
       >
         <div className="map-container">
-          <h2>Map</h2>
+          <Map center={place.location} zoom={16}/>
         </div>
       </Modal>
       <li className="place-item">
