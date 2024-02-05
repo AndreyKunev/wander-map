@@ -1,9 +1,4 @@
-import {
-  CSSProperties,
-  ReactNode,
-  MouseEvent,
-  ReactEventHandler,
-} from 'react';
+import { CSSProperties, ReactNode, MouseEvent, ReactEventHandler } from 'react';
 
 export type UserInfo = {
   id: string;
@@ -71,4 +66,25 @@ export type MapProps = {
     lng: number;
   };
   zoom: number;
-}
+};
+
+export type InputProps = {
+  element: 'input' | 'textarea';
+  rows?: number;
+  placeholder?: string;
+  type?:
+    | 'text'
+    | 'password'
+    | 'number'
+    | 'email'
+    | 'checkbox'
+    | 'radio'
+    | 'file'
+    | 'date'
+    | 'color'
+    | 'range'
+    | 'hidden';
+  id: string;
+  className?: string;
+  label: string;
+};
