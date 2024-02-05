@@ -13,7 +13,7 @@ const PlaceList: FC<{ placeArr: UserPlaceArray }> = ({ placeArr }) => {
     return (
       <div className="place-list center">
         <Card>
-          <h2>No Places found.</h2>
+          <h2>No Wander Points found.</h2>
           <button>Share Place</button>
         </Card>
       </div>

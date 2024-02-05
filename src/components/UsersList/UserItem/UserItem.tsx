@@ -24,7 +24,7 @@ const UserItem: FC<{ user: UserInfo }> = ({ user }) => {
           <div className="user-item__info">
             <h2>{user.name}</h2>
             <h3>
-              {user.placeCount} {user.placeCount === 1 ? 'Place' : 'Places'}
+              {user.placeCount} {user.placeCount === 1 ? 'Wander Point' : 'Wander Points'}
             </h3>
           </div>
         </Link>
