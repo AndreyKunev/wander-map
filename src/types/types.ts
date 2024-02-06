@@ -84,7 +84,26 @@ export type InputProps = {
     | 'color'
     | 'range'
     | 'hidden';
-  id: string;
+  id?: string;
   className?: string;
   label: string;
+  errorText?: string;
+  validators: ValidatorType[];
 };
+
+export type InputState = {
+  value: string;
+  isValid: boolean;
+  isTouched: boolean;
+};
+
+export type InputAction = {
+  type: 'CHANGE' | 'TOUCH';
+  value: string;
+  validators: ValidatorType[];
+};
+
+export type ValidatorType = {
+  type: string;
+  val?: number;
+}
