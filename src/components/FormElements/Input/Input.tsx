@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useReducer } from 'react';
+import { ChangeEvent, FC, useEffect, useReducer } from 'react';
 
 import { validate } from '../../../utils/validators';
 
@@ -30,6 +30,13 @@ const Input: FC<InputProps> = (props) => {
     isValid: false,
     isTouched: false,
   });
+
+  const { id, onInput } = props;
+  const {value, isValid } = inputState
+
+  useEffect(() => {
+    onInput(id!, value, isValid)
+  }, [id, isValid, onInput, value])
 
   const changeHandler = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
