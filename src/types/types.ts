@@ -89,6 +89,7 @@ export type InputProps = {
   label: string;
   errorText?: string;
   validators: ValidatorType[];
+  onInput: (id: string, value: string, isValid: boolean) => void;
 };
 
 export type InputState = {
@@ -106,4 +107,25 @@ export type InputAction = {
 export type ValidatorType = {
   type: string;
   val?: number;
+};
+
+export type FormState = {
+  inputs: {
+    title: {
+      value: string;
+      isValid: boolean;
+    },
+    description: {
+      value: string;
+      isValid: boolean;
+    }
+  };
+  isValid: boolean;
+}
+
+export type FormAction = {
+  type: 'INPUT_CHANGE';
+  inputId: string;
+  isValid: boolean;
+  value: string;
 }
