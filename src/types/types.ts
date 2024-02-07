@@ -90,6 +90,8 @@ export type InputProps = {
   errorText?: string;
   validators: ValidatorType[];
   onInput: (id: string, value: string, isValid: boolean) => void;
+  value?: string;
+  valid?: boolean;
 };
 
 export type InputState = {
@@ -116,6 +118,10 @@ export type FormState = {
       isValid: boolean;
     },
     description: {
+      value: string;
+      isValid: boolean;
+    },
+    address: {
       value: string;
       isValid: boolean;
     }
