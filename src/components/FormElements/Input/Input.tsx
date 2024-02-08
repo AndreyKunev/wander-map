@@ -45,7 +45,7 @@ const Input: FC<InputProps> = (props) => {
       type: 'CHANGE',
       value: event.target.value,
       validators: props.validators,
-    });    
+    });        
   };
 
   const touchHandler = () => {
@@ -71,6 +71,7 @@ const Input: FC<InputProps> = (props) => {
         id={props.id}
         rows={props.rows || 3}
         onChange={changeHandler}
+        onBlur={touchHandler}
         value={inputState.value}
       />
     );
