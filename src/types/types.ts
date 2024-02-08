@@ -52,7 +52,7 @@ export type ModalProps = {
   headerClass?: string;
   header: string;
   onSubmit?: () => void;
-  contentClass: string;
+  contentClass?: string;
   children: ReactNode;
   footerClass: string;
   footer: ReactNode;

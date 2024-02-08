@@ -11,8 +11,16 @@ import { UserPlace } from '../../../types/types';
 
 const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
   const [showMap, setShowMap] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const toggleMapHandler = () => setShowMap(!showMap);
+
+  const toggleConfirmModal = () => setShowConfirmModal(!showConfirmModal);
+
+  const confirmDeleteHandler = () => {
+    setShowConfirmModal(false);
+    console.log('Deleting...');
+  };
 
   return (
     <>
@@ -25,8 +33,26 @@ const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
         footer={<Button onClick={toggleMapHandler}>Close</Button>}
       >
         <div className="map-container">
-          <Map center={place.location} zoom={16}/>
+          <Map center={place.location} zoom={16} />
         </div>
+      </Modal>
+      <Modal
+        show={showConfirmModal}
+        onCancel={toggleConfirmModal}
+        header="Are you sure?"
+        footerClass="place-item__modal-actions"
+        footer={
+          <>
+            <Button inverse onClick={toggleConfirmModal}>
+              Cancel
+            </Button>
+            <Button danger onClick={confirmDeleteHandler}>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p>Deleting a wander point is irreversible.</p>
       </Modal>
       <li className="place-item">
         <Card className="place-item__content">
@@ -43,7 +69,9 @@ const PlaceItem: FC<{ place: UserPlace }> = ({ place }) => {
               View on Map
             </Button>
             <Button to={`/places/${place.id}`}>Edit</Button>
-            <Button danger>Delete</Button>
+            <Button danger onClick={toggleConfirmModal}>
+              Delete
+            </Button>
           </div>
         </Card>
       </li>
