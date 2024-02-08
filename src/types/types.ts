@@ -111,27 +111,31 @@ export type ValidatorType = {
   val?: number;
 };
 
+type InputField = {
+  value: string;
+  isValid: boolean;
+}
+
 export type FormState = {
-  inputs: {
-    title: {
-      value: string;
-      isValid: boolean;
-    },
-    description: {
-      value: string;
-      isValid: boolean;
-    },
-    address: {
-      value: string;
-      isValid: boolean;
-    }
-  };
+  title: InputField;
+  description: InputField;
+  address?: InputField;
+}
+
+export type FormReducerState = {
+  inputs: FormState;
   isValid: boolean;
 }
 
 export type FormAction = {
   type: 'INPUT_CHANGE';
-  inputId: string;
-  isValid: boolean;
   value: string;
-}
+  isValid: boolean;
+  inputId: string;
+} | {
+  type: 'SET_DATA';
+  inputs: FormState;
+  formIsValid: boolean;
+};
+
+
