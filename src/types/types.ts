@@ -111,7 +111,7 @@ export type ValidatorType = {
   val?: number;
 };
 
-type InputField = {
+export type InputField = {
   value: string;
   isValid: boolean;
 }
@@ -120,7 +120,11 @@ export type FormState = {
   title: InputField;
   description: InputField;
   address?: InputField;
-}
+} | {
+  name?: InputField;
+  email: InputField;
+  password: InputField;
+};
 
 export type FormReducerState = {
   inputs: FormState;

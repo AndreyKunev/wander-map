@@ -1,6 +1,11 @@
 import { useReducer, useCallback } from 'react';
 
-import { FormState, FormAction, FormReducerState } from '../types/types';
+import {
+  FormState,
+  FormAction,
+  FormReducerState,
+  InputField,
+} from '../types/types';
 
 /**
  * Reducer function for managing form state.
@@ -16,11 +21,15 @@ const formReducer = (state: FormReducerState, action: FormAction) => {
     case 'INPUT_CHANGE':
       formIsValid = true;
       for (const inputId in state.inputs) {
+        if (!state.inputs[inputId as keyof FormState]) {
+          continue;
+        }
         if (inputId === action.inputId) {
           formIsValid = formIsValid && action.isValid;
         } else {
           formIsValid =
-            formIsValid && state.inputs[inputId as keyof FormState]!.isValid;
+            formIsValid &&
+            (state.inputs[inputId as keyof FormState] as InputField)!.isValid;
         }
       }
       return {
