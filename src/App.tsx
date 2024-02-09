@@ -10,6 +10,7 @@ import Users from './pages/Users/Users';
 import UserPlaces from './pages/UserPlaces/UserPlaces';
 import NewPlace from './pages/NewPlace/NewPlace';
 import UpdatePlace from './pages/UpdatePlace/UpdatePlace';
+import AuthPage from './pages/AuthPage/AuthPage';
 
 const appRoutes = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const appRoutes = createBrowserRouter(
       <Route path="/:userId/places" element={<UserPlaces />} />
       <Route path="/places/new" element={<NewPlace />} />
       <Route path="/places/:placeId" element={<UpdatePlace />} />
+      <Route path='/login' element={<AuthPage />} />
     </Route>
   )
 );
