@@ -8,7 +8,7 @@ const Users = () => {
       name: "John Doe",
       image:
         "https://images.pexels.com/photos/2167039/pexels-photo-2167039.jpeg",
-      placeCount: 4,
+      placeCount: 1,
     },
   ];
 

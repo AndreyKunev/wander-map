@@ -1,4 +1,4 @@
-import { FormEvent, useState, useContext } from 'react';
+import { FormEvent, useState, useContext, FC } from 'react';
 
 import Card from '../../components/Card/Card';
 import Input from '../../components/FormElements/Input/Input';
@@ -13,7 +13,7 @@ import { AuthContext } from '../../context/auth-context';
 
 import './AuthPage.css';
 
-const AuthPage = () => {
+const AuthPage: FC = () => {
   const auth = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
 
