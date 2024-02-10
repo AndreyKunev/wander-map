@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useContext } from 'react';
 
 import Card from '../../components/Card/Card';
 import Input from '../../components/FormElements/Input/Input';
@@ -9,11 +9,12 @@ import {
   VALIDATOR_REQUIRE,
 } from '../../utils/validators';
 import { useForm } from '../../hooks/form-hook';
+import { AuthContext } from '../../context/auth-context';
 
 import './AuthPage.css';
-import { InputField } from '../../types/types';
 
 const AuthPage = () => {
+  const auth = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -58,7 +59,7 @@ const AuthPage = () => {
 
   const loginHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formState);
+    auth.login();
   };
 
   return (

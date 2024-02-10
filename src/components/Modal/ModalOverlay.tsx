@@ -31,10 +31,10 @@ const ModalOverlay: FC<ModalProps> = ({
           onSubmit ? onSubmit : (event) => event.preventDefault()
         }
       >
-        <div className={`modal_content ${contentClass}`}>
+        <div className={`modal__content ${contentClass}`}>
           {children}
         </div>
-        <footer className={`modal_footer ${footerClass}`}>
+        <footer className={`modal__footer ${footerClass}`}>
           {footer}
         </footer>
       </form>
