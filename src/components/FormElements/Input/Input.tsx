@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useReducer } from 'react';
+import { ChangeEvent, FC, useEffect, useReducer, useRef } from 'react';
 
 import { validate } from '../../../utils/validators';
 
@@ -32,11 +32,27 @@ const Input: FC<InputProps> = (props) => {
   });
 
   const { id, onInput } = props;
-  const {value, isValid } = inputState
+  const { value, isValid } = inputState;
+  const autoCompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    onInput(id!, value, isValid);
+  }, [id, isValid, onInput, value]);
 
   useEffect(() => {
-    onInput(id!, value, isValid)
-  }, [id, isValid, onInput, value])
+    const options = {
+      fields: ['name'],
+      types: ['address'],
+    };
+
+    if (inputRef.current && props.id === 'address') {
+      autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+        inputRef.current,
+        options
+      );
+    }
+  }, [props.id]);
 
   const changeHandler = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -45,23 +61,24 @@ const Input: FC<InputProps> = (props) => {
       type: 'CHANGE',
       value: event.target.value,
       validators: props.validators,
-    });        
+    });
   };
 
   const touchHandler = () => {
     dispatch({
       type: 'TOUCH',
       value: '',
-      validators: []
+      validators: [],
     });
   };
 
   const element =
     props.element === 'input' ? (
       <input
+        ref={props.id === 'address' ? inputRef : null}
         id={props.id}
         type={props.type}
-        placeholder={props.placeholder}
+        placeholder={props.placeholder || ''}
         onChange={changeHandler}
         onBlur={touchHandler}
         value={inputState.value}
