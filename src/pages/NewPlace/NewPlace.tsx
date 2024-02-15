@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FC, FormEvent } from 'react';
 
 import { useForm } from '../../hooks/form-hook';
 import Input from '../../components/FormElements/Input/Input';
@@ -7,7 +7,7 @@ import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../utils/validators';
 
 import './NewPlace.css';
 
-const NewPlace = () => {
+const NewPlace: FC = () => {
   const [formState, inputHandler] = useForm({
       title: {
         value: '',
@@ -32,6 +32,7 @@ const NewPlace = () => {
 
   return (
     <form className="place-form" onSubmit={placeSubmitHandler}>
+      <h2>Create a New Wander Point!</h2>
       <Input
         id="title"
         type="text"
@@ -58,7 +59,7 @@ const NewPlace = () => {
         onInput={inputHandler}
       />
       <Button type="submit" disabled={!formState.isValid}>
-        Add Wander Point
+        Create Wander Point
       </Button>
     </form>
   );
