@@ -114,32 +114,34 @@ export type ValidatorType = {
 export type InputField = {
   value: string;
   isValid: boolean;
-}
-
-export type FormState = {
-  title: InputField;
-  description: InputField;
-  address?: InputField;
-} | {
-  name?: InputField;
-  email: InputField;
-  password: InputField;
 };
+
+export type FormState =
+  | {
+      title: InputField;
+      description: InputField;
+      address?: InputField;
+    }
+  | {
+      name?: InputField;
+      email: InputField;
+      password: InputField;
+    };
 
 export type FormReducerState = {
   inputs: FormState;
   isValid: boolean;
-}
-
-export type FormAction = {
-  type: 'INPUT_CHANGE';
-  value: string;
-  isValid: boolean;
-  inputId: string;
-} | {
-  type: 'SET_DATA';
-  inputs: FormState;
-  formIsValid: boolean;
 };
 
-
+export type FormAction =
+  | {
+      type: 'INPUT_CHANGE';
+      value: string;
+      isValid: boolean;
+      inputId: string;
+    }
+  | {
+      type: 'SET_DATA';
+      inputs: FormState;
+      formIsValid: boolean;
+    };

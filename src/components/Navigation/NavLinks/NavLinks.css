@@ -15,23 +15,25 @@
 }
 
 .nav-links a {
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  border-radius: 10px;
   color: #292929;
   text-decoration: none;
   padding: 0.5rem;
+  font-weight: 800;
 }
 
 .nav-links a:hover,
 .nav-links a:active,
 .nav-links a.active {
-  background: #f8df00;
-  border-color: #292929;
-  color: #292929;
+  background: #FC5185;
+  border-color: #F5F5F5;
+  color: #F5F5F5;
 }
 
 .nav-links button {
   cursor: pointer;
-  border: 1px solid #292929;
+  border: 2px solid #292929;
   color: #292929;
   background: transparent;
   padding: 0.5rem;
@@ -45,7 +47,7 @@
 .nav-links button:hover,
 .nav-links button:active {
   background: #292929;
-  color: white;
+  color: #F5F5F5;
 }
 
 @media (min-width: 768px) {
@@ -58,19 +60,21 @@
   }
 
   .nav-links a {
-    color: white;
+    color: #F5F5F5;
     text-decoration: none;
   }
 
   .nav-links button {
-    border: 1px solid white;
-    color: white;
+    border: 2px solid #F5F5F5;
+    border-radius: 10px;
+    font-weight: 800;
+    color: #364F6B;
     background: transparent;
   }
 
   .nav-links button:hover,
   .nav-links button:active {
-    background: #f8df00;
-    color: #292929;
+    background: #364F6B;
+    color: #3FC1C9;
   }
 }
