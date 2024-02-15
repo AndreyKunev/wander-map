@@ -1,5 +1,6 @@
 .authentication__header {
-  color: white;
+  color: rgb(255,0,85);
+  border-radius: 0.5rem;
   text-align: center;
 }
 
@@ -12,4 +13,10 @@
 
 .authentication form {
   margin-bottom: 1rem;
+}
+
+.authentication p {
+  font-style: italic;
+  color: gray;
+  font-size: small;
 }
