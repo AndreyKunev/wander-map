@@ -30,6 +30,11 @@ const NavLinks = () => {
       )}
       {auth.isLoggedIn && (
         <li>
+          <NavLink to="/profile">PROFILE</NavLink>
+        </li>
+      )}
+      {auth.isLoggedIn && (
+        <li>
           <button onClick={auth.logout}>LOGOUT</button>
           <></>
         </li>

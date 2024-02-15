@@ -1,0 +1,23 @@
+.profile__header {
+  color: #F5F5F5;
+  text-align: center;
+}
+
+.profile {
+  width: 90%;
+  max-width: 25rem;
+  margin: 7rem auto;
+  text-align: center;
+}
+
+.profile-avatar {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-wander-points {
+  font-size: medium;
+  font-style: italic;
+}

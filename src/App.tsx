@@ -13,7 +13,8 @@ import NewPlace from './pages/NewPlace/NewPlace';
 import UpdatePlace from './pages/UpdatePlace/UpdatePlace';
 import AuthPage from './pages/AuthPage/AuthPage';
 import { AuthContext } from './context/auth-context';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,6 +36,7 @@ function App() {
           <>
             <Route path="/places/:placeId" element={<UpdatePlace />} />
             <Route path="/places/new" element={<NewPlace />} />
+            <Route path="/profile" element={<Profile />}/>
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         )}
