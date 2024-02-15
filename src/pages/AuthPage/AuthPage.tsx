@@ -43,6 +43,7 @@ const AuthPage: FC = () => {
         );
       }
     } else {
+
       setFormData(
         {
           ...formState.inputs,
@@ -54,7 +55,8 @@ const AuthPage: FC = () => {
         false
       );
     }
-    setIsLogin(!isLogin);
+
+    setIsLogin((prevMode) => !prevMode);
   };
 
   const loginHandler = (event: FormEvent<HTMLFormElement>) => {
@@ -65,8 +67,8 @@ const AuthPage: FC = () => {
   return (
     <Card className="authentication">
       <form className="authentication" onSubmit={loginHandler}>
-        <div>
-          <h2>{isLogin ? 'Login' : 'Register'}</h2>
+        <div className='authentication__header'>
+          <h2>{isLogin ? 'Welcome back!' : 'Create Account'}</h2>
         </div>
         {!isLogin && (
           <Input
@@ -100,10 +102,11 @@ const AuthPage: FC = () => {
         <Button type="submit" disabled={!formState.isValid}>
           {isLogin ? 'Login' : 'Register'}
         </Button>
-        <Button inverse onClick={switchModeHandler}>
-          Switch to {isLogin ? 'Register' : 'Login'}
-        </Button>
       </form>
+      <p>Don't have an account?</p>
+      <Button inverse onClick={switchModeHandler}>
+        {isLogin ? 'Create Account' : 'Switch to Login'}
+      </Button>
     </Card>
   );
 };
