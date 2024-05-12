@@ -1,14 +1,17 @@
-import express, { Express, Request, Response} from 'express';
+import express, { Express, Request, Response } from 'express';
+
 import dotenv from 'dotenv';
 
-dotenv.config();
+import { routes } from './routes';
 
 const app: Express = express();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send("Dungle!");
-});
+dotenv.config();
+
+app.use('/', routes);
 
 app.listen(process.env.PORT, () => {
-  console.log(`server running : http://${process.env.HOST}:${process.env.PORT}`);
+	console.log(
+		`server running : http://${process.env.HOST}:${process.env.PORT}`
+	);
 });
