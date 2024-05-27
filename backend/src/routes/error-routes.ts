@@ -1,10 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
 
-import { CustomError } from '../types/types';
+import { IHttpError } from '../types/types';
 
 export const errorRoute = express.Router();
 
-errorRoute.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
+errorRoute.use((err: IHttpError, req: Request, res: Response, next: NextFunction) => {
 	if (res.headersSent) {
 		return next(err); 
 	}

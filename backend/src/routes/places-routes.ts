@@ -1,6 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 
-import { CustomError } from '../types/types';
+import { HttpError } from '../models/http-error';
 
 export const placesRoute = express.Router();
 
@@ -50,11 +50,7 @@ placesRoute.get(
 		});
 
 		if (!place) {
-			const error: CustomError = new Error(
-				'No place found for provided id.'
-			);
-			error.code = 404;
-			throw error;
+			throw new HttpError('No place found for provided id.', 404);
 		}
 
 		res.json({ place });
@@ -71,11 +67,9 @@ placesRoute.get(
 		});
 
 		if (places.length === 0) {
-			const error: CustomError = new Error(
-				'No place found for provided user id.'
+			return next(
+				new HttpError('No place found for provided user id.', 404)
 			);
-			error.code = 404;
-			return next(error);
 		}
 
 		res.json({ places });
