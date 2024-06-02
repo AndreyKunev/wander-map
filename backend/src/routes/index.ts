@@ -1,4 +1,5 @@
-import express, { NextFunction } from 'express';
+import express from 'express';
+
 import { placesRoute } from './places-routes';
 import { errorRoute } from './error-routes';
 
