@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 import { routes } from './routes';
 import { notFoundHandler } from './middlewares/not-found-handler';
-import { serverErrorHandler } from './middlewares/error-handler';
+import { serverErrorHandler } from './middlewares/server-error-handler';
 
 
 const app: Express = express();
