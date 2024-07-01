@@ -88,10 +88,39 @@ export const createPlace = (
 		description,
 		location: coordinates,
 		address,
-		creator
+		creator,
 	};
 
 	DUMMY_PLACES.push(createdPlace);
 
 	res.status(201).json({ place: createdPlace });
+};
+
+export const updatePlace = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const placeId = req.params.placeId;
+	const { title, description } = req.body;
+	const updatedPlace = {
+		...DUMMY_PLACES.find((place) => place.id == placeId),
+	};
+
+	if (!updatedPlace) {
+		return next(new HttpError('No place found for provided id.', 404));
+	}
+
+	if (title) {
+		updatedPlace.title = title;
+	}
+
+	if (description) {
+		updatedPlace.description = description;
+	}
+	
+	const targetIndex = DUMMY_PLACES.findIndex(place => place.id == placeId);
+	DUMMY_PLACES[targetIndex] = updatedPlace;
+	
+	res.status(200).json({ place: updatedPlace });
 };
