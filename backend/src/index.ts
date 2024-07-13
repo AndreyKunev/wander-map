@@ -5,13 +5,15 @@ import dotenv from 'dotenv';
 import { routes } from './routes';
 import { notFoundHandler } from './middlewares/not-found-handler';
 import { serverErrorHandler } from './middlewares/server-error-handler';
-
+import { logger } from './middlewares/logger';
 
 const app: Express = express();
 
 dotenv.config();
 
 app.use(express.json());
+
+app.use(logger);
 
 app.use('/', routes);
 
