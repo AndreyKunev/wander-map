@@ -4,7 +4,7 @@ import { HttpError } from '../models/http-error';
 import { UserPlace } from '../types/types';
 import { randomUUID } from 'crypto';
 
-const DUMMY_PLACES = [
+let DUMMY_PLACES = [
 	{
 		id: 'p1',
 		title: 'Empire State Building',
@@ -118,9 +118,26 @@ export const updatePlace = (
 	if (description) {
 		updatedPlace.description = description;
 	}
-	
-	const targetIndex = DUMMY_PLACES.findIndex(place => place.id == placeId);
+
+	const targetIndex = DUMMY_PLACES.findIndex((place) => place.id == placeId);
 	DUMMY_PLACES[targetIndex] = updatedPlace;
-	
+
 	res.status(200).json({ place: updatedPlace });
 };
+
+export const deletePlace = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const placeId = req.params.placeId;
+	const targetPlace = DUMMY_PLACES.findIndex((place) => place.id === placeId);
+
+	if (targetPlace === -1) {
+		return next(new HttpError('No place found for provided id.', 404));
+	}
+
+	DUMMY_PLACES = DUMMY_PLACES.filter((place) => place.id != placeId);
+
+	res.status(200).json({ message: 'Place deleted' });
+}
