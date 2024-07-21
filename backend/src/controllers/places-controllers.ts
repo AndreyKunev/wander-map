@@ -103,6 +103,7 @@ export const updatePlace = (
 ) => {
 	const placeId = req.params.placeId;
 	const { title, description } = req.body;
+
 	const updatedPlace = {
 		...DUMMY_PLACES.find((place) => place.id == placeId),
 	};
@@ -140,4 +141,4 @@ export const deletePlace = (
 	DUMMY_PLACES = DUMMY_PLACES.filter((place) => place.id != placeId);
 
 	res.status(200).json({ message: 'Place deleted' });
-}
+};
