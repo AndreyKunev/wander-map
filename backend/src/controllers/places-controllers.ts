@@ -47,15 +47,15 @@ export const getPlaceById = (
 ) => {
 	const placeId = req.params.placeId;
 
-	const place = DUMMY_PLACES.find((p) => {
-		return p.id === placeId;
+	const targetPlace = DUMMY_PLACES.find((place) => {
+		return place.id === placeId;
 	});
 
-	if (!place) {
+	if (!targetPlace) {
 		throw new HttpError('No place found for provided id.', 404);
 	}
 
-	res.json({ place });
+	res.json({ place: targetPlace });
 };
 
 export const getUserPlacesById = (
@@ -65,8 +65,8 @@ export const getUserPlacesById = (
 ) => {
 	const userId = req.params.userId;
 
-	const places = DUMMY_PLACES.filter((p) => {
-		return p.creator === userId;
+	const places = DUMMY_PLACES.filter((place) => {
+		return place.creator === userId;
 	});
 
 	if (places.length === 0) {

@@ -14,3 +14,12 @@ export type UserPlace = {
     };
     creator: string;
 };
+
+export type User = {
+    id: string,
+    name: string, 
+    bio?: string,
+    birthDate: string,
+    profilePicture: string,
+    email: string
+}
