@@ -10,6 +10,7 @@ let DUMMY_USERS: User[] = [
 		bio: 'This is a test bio',
 		profilePicture: 'an image',
 		birthDate: '03/03/1990',
+		password: 'test',
 	},
 	{
 		id: 'u2',
@@ -18,6 +19,7 @@ let DUMMY_USERS: User[] = [
 		bio: 'This is another test bio',
 		profilePicture: 'another image',
 		birthDate: '03/04/1990',
+		password: 'test',
 	},
 	{
 		id: 'u3',
@@ -26,8 +28,17 @@ let DUMMY_USERS: User[] = [
 		bio: 'This is the third test bio',
 		profilePicture: 'third image',
 		birthDate: '03/05/1990',
+		password: 'test',
 	},
 ];
+
+export const getAllUsers = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	res.json({ users: DUMMY_USERS });
+};
 
 export const getUserById = (
 	req: Request,
@@ -47,13 +58,26 @@ export const getUserById = (
 	res.json({ user });
 };
 
+export const loginUser = (req: Request, res: Response, next: NextFunction) => {
+	const { email, password } = req.body;
+
+	const targetUser = DUMMY_USERS.find(user => user.email === email)
+
+	if (!targetUser || targetUser.password !== password) {
+		throw new HttpError('Could not identify user - wrong credentials!', 401)
+	}
+
+	res.json({message: 'Login successful.'})
+};
+
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
-	const { name, birthDate, email } = req.body;
+	const { name, birthDate, email, password } = req.body;
 
 	const createdUser: User = {
 		id: crypto.randomUUID(),
 		name,
 		birthDate,
+		password,
 		email,
 		bio: '',
 		profilePicture: 'test',
@@ -61,7 +85,10 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
 
 	DUMMY_USERS.push(createdUser);
 
-	res.status(201).json(`User ${name} created!`);
+	res.status(201).json({
+		message: `User ${name} created!`,
+		user: createdUser,
+	});
 };
 
 export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
