@@ -73,6 +73,12 @@ export const loginUser = (req: Request, res: Response, next: NextFunction) => {
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
 	const { name, birthDate, email, password } = req.body;
 
+	const hasUser = DUMMY_USERS.find((user) => user.email === email);
+
+	if (hasUser) {
+		throw new HttpError('User with this email already exists!', 422);
+	}
+
 	const createdUser: User = {
 		id: crypto.randomUUID(),
 		name,
