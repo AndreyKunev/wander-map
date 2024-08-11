@@ -21,5 +21,6 @@ export type User = {
     bio?: string,
     birthDate: string,
     profilePicture: string,
-    email: string
+    email: string,
+    password: string
 }
