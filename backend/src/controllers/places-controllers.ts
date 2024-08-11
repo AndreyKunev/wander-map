@@ -132,9 +132,9 @@ export const deletePlace = (
 	next: NextFunction
 ) => {
 	const placeId = req.params.placeId;
-	const targetPlace = DUMMY_PLACES.findIndex((place) => place.id === placeId);
+	const targetIndex = DUMMY_PLACES.findIndex((place) => place.id === placeId);
 
-	if (targetPlace === -1) {
+	if (targetIndex === -1) {
 		return next(new HttpError('No place found for provided id.', 404));
 	}
 

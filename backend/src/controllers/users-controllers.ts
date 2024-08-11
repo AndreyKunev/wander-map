@@ -5,7 +5,7 @@ import { User } from '../types/types';
 let DUMMY_USERS: User[] = [
 	{
 		id: 'u1',
-        name: 'Peter',
+		name: 'Peter',
 		email: 'test@test.com',
 		bio: 'This is a test bio',
 		profilePicture: 'an image',
@@ -13,7 +13,7 @@ let DUMMY_USERS: User[] = [
 	},
 	{
 		id: 'u2',
-        name: 'Steve',
+		name: 'Steve',
 		email: 'test2@test.com',
 		bio: 'This is another test bio',
 		profilePicture: 'another image',
@@ -21,7 +21,7 @@ let DUMMY_USERS: User[] = [
 	},
 	{
 		id: 'u3',
-        name: 'Jenny',
+		name: 'Jenny',
 		email: 'test3@test.com',
 		bio: 'This is the third test bio',
 		profilePicture: 'third image',
@@ -29,7 +29,11 @@ let DUMMY_USERS: User[] = [
 	},
 ];
 
-export const getUserById = (req: Request, res: Response, next: NextFunction) => {
+export const getUserById = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	const userId = req.params.userId;
 
 	const user = DUMMY_USERS.find((user) => {
@@ -44,18 +48,32 @@ export const getUserById = (req: Request, res: Response, next: NextFunction) => 
 };
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
-    const { name, birthDate, email } = req.body;
+	const { name, birthDate, email } = req.body;
 
-    const createdUser: User = {
-        id: crypto.randomUUID(),
-        name,
-        birthDate,
-        email,
-        bio: '',
-        profilePicture: 'test'
-    }
+	const createdUser: User = {
+		id: crypto.randomUUID(),
+		name,
+		birthDate,
+		email,
+		bio: '',
+		profilePicture: 'test',
+	};
 
-    DUMMY_USERS.push(createdUser);
+	DUMMY_USERS.push(createdUser);
 
 	res.status(201).json(`User ${name} created!`);
-}
+};
+
+export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+	const userId = req.params.userId;
+
+	const targetIndex = DUMMY_USERS.findIndex((user) => user.id === userId);
+
+	if (targetIndex === -1) {
+		return next(new HttpError('No user found for provided id.', 404));
+	}
+
+	DUMMY_USERS = DUMMY_USERS.filter((user) => user.id !== userId);
+
+	res.status(200).json({ message: 'User deleted' });
+};
