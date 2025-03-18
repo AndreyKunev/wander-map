@@ -9,7 +9,7 @@ import {
 import {
 	validatePlace,
 	validateUpdatePlace,
-} from '../middlewares/validate-place';
+} from '../middlewares/validations';
 
 export const placesRoute = express.Router();
 
