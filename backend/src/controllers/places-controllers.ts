@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
+import { randomUUID } from 'crypto';
 
 import { HttpError } from '../models/http-error';
 import { UserPlace } from '../types/types';
-import { randomUUID } from 'crypto';
+import { getCoordinates } from '../utils/location';
 
 let DUMMY_PLACES = [
 	{
@@ -76,12 +77,19 @@ export const getUserPlacesById = (
 	res.json({ places });
 };
 
-export const createPlace = (
+export const createPlace = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const { title, description, coordinates, address, creator } = req.body;
+
+	const { title, description, address, creator } = req.body;
+	let coordinates;
+	try {
+		coordinates= await getCoordinates(address);
+	} catch (error) {
+		return next(error);
+	}
 	const createdPlace: UserPlace = {
 		id: randomUUID(),
 		title,
