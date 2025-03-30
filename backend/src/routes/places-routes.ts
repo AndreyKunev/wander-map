@@ -7,7 +7,7 @@ import {
 	updatePlace,
 } from '../controllers/places-controllers';
 import {
-	validatePlace,
+	validateCreatePlace,
 	validateUpdatePlace,
 } from '../middlewares/validations';
 
@@ -17,7 +17,7 @@ placesRoute.get('/:placeId', getPlaceById);
 
 placesRoute.get('/user/:userId', getUserPlacesById);
 
-placesRoute.post('/', validatePlace, createPlace);
+placesRoute.post('/', validateCreatePlace, createPlace);
 
 placesRoute.patch('/:placeId', validateUpdatePlace, updatePlace);
 

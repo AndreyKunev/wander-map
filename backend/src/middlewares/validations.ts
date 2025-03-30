@@ -6,31 +6,25 @@ import { HttpError } from '../models/http-error';
 const createPlaceValidationChecks = [
 	check('title').trim().notEmpty().withMessage('Please provide a title.'),
 	check('description').trim()
-		.notEmpty()
+		.isLength({ min: 2})
 		.withMessage('Please provide a description.'),
 	check('address').trim().notEmpty().withMessage('Please provide an address.'),
 	check('creator').trim().notEmpty().withMessage('Creator is required.'),
-	check('coordinates')
-		.isObject()
-		.withMessage('Coordinates should be an object.'),
 ];
 
 const updatePlaceValidationChecks = [
 	check('title').notEmpty().trim().withMessage('Please provide a title.'),
 	check('description')
-		.isLength({ min: 5 })
+		.isLength({ min: 2 })
 		.withMessage('Description must be at least 5 characters.'),
-];
-
-const loginUserValidationChecks = [
-	check('email').trim().isEmail().withMessage('Please provide an email.'),
-	check('password').trim().notEmpty().withMessage('Password is required.'),
 ];
 
 const createUserValidationChecks = [
 	check('name').notEmpty().withMessage('Name is required.'),
 	check('birthDate').notEmpty().withMessage('Birth date is required.'),
-	check('birthDate').isDate()
+	check('birthDate').isDate({ format: "dd/mm/yyyy" }).withMessage('Not a valid date.'),
+	check('email').normalizeEmail().isEmail().withMessage('Invalid email.'),
+	check('password').isLength({ min: 8}).withMessage('Minimum password length is 8 characters.'),
 ]
 
 const validateResults: RequestHandler = (
@@ -41,8 +35,9 @@ const validateResults: RequestHandler = (
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		const errorMessages = errors.array().map((e) => e.msg);
+		let i = 1;
 		const error = new HttpError(
-			`Invalid input: ${errorMessages.join(' & ')}`,
+			`Invalid input: X- ${errorMessages.join(` X- `)}`,
 			422
 		);
 		return next(error);
@@ -50,12 +45,17 @@ const validateResults: RequestHandler = (
 	next();
 };
 
-export const validatePlace: RequestHandler[] = [
+export const validateCreatePlace: RequestHandler[] = [
 	...createPlaceValidationChecks,
 	validateResults,
 ];
 
 export const validateUpdatePlace: RequestHandler[] = [
 	...updatePlaceValidationChecks,
+	validateResults,
+];
+
+export const validateCreateUser: RequestHandler[] = [
+	...createUserValidationChecks,
 	validateResults,
 ];
