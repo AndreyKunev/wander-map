@@ -35,9 +35,8 @@ const validateResults: RequestHandler = (
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		const errorMessages = errors.array().map((e) => e.msg);
-		let i = 1;
 		const error = new HttpError(
-			`Invalid input: X- ${errorMessages.join(` X- `)}`,
+			`Invalid input: ❌ - ${errorMessages.join('\n ❌ - ')}`,
 			422
 		);
 		return next(error);
