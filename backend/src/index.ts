@@ -11,7 +11,12 @@ import { logger } from './middlewares/logger';
 dotenv.config();
 
 export const app: Express = express();
-export const mongoURI = process.env.MONGO_URI;
+
+if (typeof process.env.MONGO_URI === 'undefined') {
+	throw new Error('Environment variable MONGO_URI is undefined.');
+}
+
+export const mongoURI: string = process.env.MONGO_URI;
 
 
 app.use(express.json());
