@@ -51,7 +51,7 @@ export const getPlaceById = async (
 	let targetPlace;
 
 	try {
-		targetPlace = await Place.findById(placeId);
+		targetPlace = await Place.findById(placeId).exec();
 	} catch (err) {
 		return next(
 			new HttpError('Could not find place for provided id.', 500)
@@ -59,7 +59,7 @@ export const getPlaceById = async (
 	}
 
 	if (!targetPlace) {
-		throw new HttpError('No place found for provided id.', 404);
+		return next(new HttpError('No place found for provided id.', 404));
 	}
 
 	res.json({ place: targetPlace });
@@ -71,11 +71,16 @@ export const getUserPlacesById = async (
 	next: NextFunction
 ) => {
 	const userId = req.params.userId;
+	let targetPlaces;
 
-	const targetPlaces = await Place.find({ creator: userId });
+	try {
+		targetPlaces = await Place.find({ creator: userId }).exec();
+	} catch (err) {
+		return next(new HttpError('Could not find places for provided user id.', 500));
+	}
 
 	if (targetPlaces.length === 0) {
-		return next(new HttpError('No place found for provided user id.', 404));
+		return next(new HttpError('No places found for provided user id.', 404));
 	}
 
 	res.json({ targetPlaces });
@@ -145,7 +150,7 @@ export const updatePlace = (
 	res.status(200).json({ place: updatedPlace });
 };
 
-export const deletePlace = (
+export const deletePlace = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
