@@ -42,16 +42,21 @@ let DUMMY_PLACES = [
 	},
 ];
 
-export const getPlaceById = (
+export const getPlaceById = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	const placeId = req.params.placeId;
+	let targetPlace;
 
-	const targetPlace = DUMMY_PLACES.find((place) => {
-		return place.id === placeId;
-	});
+	try {
+		targetPlace = await Place.findById(placeId);
+	} catch (err) {
+		return next(
+			new HttpError('Could not find place for provided id.', 500)
+		);
+	}
 
 	if (!targetPlace) {
 		throw new HttpError('No place found for provided id.', 404);
@@ -108,12 +113,7 @@ export const createPlace = async (
 		await createdPlace.save();
 		res.status(201).json({ place: createdPlace });
 	} catch (err) {
-		return next(
-			new HttpError(
-				'Creating place failed.',
-				500
-			)
-		);
+		return next(new HttpError('Creating place failed.', 500));
 	}
 };
 
