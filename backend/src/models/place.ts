@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const Schema = mongoose.Schema;
 
 const placeSchema = new Schema({
     title: { type: String, required: true },
@@ -14,4 +13,4 @@ const placeSchema = new Schema({
     creator: { type: String, required: true },
 })
 
-export const PlaceModel = mongoose.model('Place', placeSchema);
+export const Place = model('Place', placeSchema);
