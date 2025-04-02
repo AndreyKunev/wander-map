@@ -65,22 +65,20 @@ export const getPlaceById = async (
 	res.json({ place: targetPlace });
 };
 
-export const getUserPlacesById = (
+export const getUserPlacesById = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	const userId = req.params.userId;
 
-	const places = DUMMY_PLACES.filter((place) => {
-		return place.creator === userId;
-	});
+	const targetPlaces = await Place.find({ creator: userId });
 
-	if (places.length === 0) {
+	if (targetPlaces.length === 0) {
 		return next(new HttpError('No place found for provided user id.', 404));
 	}
 
-	res.json({ places });
+	res.json({ targetPlaces });
 };
 
 export const createPlace = async (
