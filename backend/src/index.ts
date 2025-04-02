@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import mongoose from 'mongoose';
 
 import dotenv from 'dotenv';
 
@@ -7,9 +8,11 @@ import { notFoundHandler } from './middlewares/not-found-handler';
 import { serverErrorHandler } from './middlewares/server-error-handler';
 import { logger } from './middlewares/logger';
 
-const app: Express = express();
-
 dotenv.config();
+
+export const app: Express = express();
+export const mongoURI = process.env.MONGO_URI;
+
 
 app.use(express.json());
 
@@ -21,8 +24,14 @@ app.use(notFoundHandler);
 
 app.use(serverErrorHandler);
 
-app.listen(process.env.PORT, () => {
-	console.log(
-		`server running : http://${process.env.HOST}:${process.env.PORT}`
-	);
-});
+export const connectDB = async () =>{
+	try {
+		await mongoose.connect(mongoURI);
+		console.log('Connected to DB.');
+	} catch (error) {
+		console.error('DB connection error:', error);
+		process.exit(1);
+	}
+
+}
+
