@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 import { HttpError } from '../models/http-error';
 import { UserPlace } from '../types/types';
 import { getCoordinates } from '../utils/location';
+import { Place } from '../models/place';
 
 let DUMMY_PLACES = [
 	{
@@ -82,26 +83,38 @@ export const createPlace = async (
 	res: Response,
 	next: NextFunction
 ) => {
-
 	const { title, description, address, creator } = req.body;
 	let coordinates;
+
 	try {
-		coordinates= await getCoordinates(address);
-	} catch (error) {
-		return next(error);
+		coordinates = await getCoordinates(address);
+	} catch (err) {
+		return next(
+			new HttpError('Failed to get coordinates for address', 500)
+		);
 	}
-	const createdPlace: UserPlace = {
-		id: randomUUID(),
+
+	// N.B. using random image for now
+	const createdPlace = new Place({
 		title,
 		description,
-		location: coordinates,
 		address,
+		location: coordinates,
+		image: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Empire_State_Building_%28aerial_view%29.jpg',
 		creator,
-	};
+	});
 
-	DUMMY_PLACES.push(createdPlace);
-
-	res.status(201).json({ place: createdPlace });
+	try {
+		await createdPlace.save();
+		res.status(201).json({ place: createdPlace });
+	} catch (err) {
+		return next(
+			new HttpError(
+				'Creating place failed.',
+				500
+			)
+		);
+	}
 };
 
 export const updatePlace = (
@@ -129,7 +142,7 @@ export const updatePlace = (
 	}
 
 	const targetIndex = DUMMY_PLACES.findIndex((place) => place.id == placeId);
-	DUMMY_PLACES[targetIndex] = updatedPlace;
+	//DUMMY_PLACES[targetIndex] = updatedPlace;
 
 	res.status(200).json({ place: updatedPlace });
 };
