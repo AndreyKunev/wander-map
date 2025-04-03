@@ -62,7 +62,7 @@ export const getPlaceById = async (
 		return next(new HttpError('No place found for provided id.', 404));
 	}
 
-	res.json({ place: targetPlace });
+	res.json({ place: targetPlace.toObject({ getters: true }) });
 };
 
 export const getUserPlacesById = async (
@@ -76,14 +76,20 @@ export const getUserPlacesById = async (
 	try {
 		targetPlaces = await Place.find({ creator: userId }).exec();
 	} catch (err) {
-		return next(new HttpError('Could not find places for provided user id.', 500));
+		return next(
+			new HttpError('Could not find places for provided user id.', 500)
+		);
 	}
 
 	if (targetPlaces.length === 0) {
-		return next(new HttpError('No places found for provided user id.', 404));
+		return next(
+			new HttpError('No places found for provided user id.', 404)
+		);
 	}
 
-	res.json({ targetPlaces });
+	res.json({
+		places: targetPlaces.map((place) => place.toObject({ getters: true })),
+	});
 };
 
 export const createPlace = async (
