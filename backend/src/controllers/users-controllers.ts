@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../models/http-error';
-import { User } from '../types/types';
+import { User } from '../models/user';
 
-let DUMMY_USERS: User[] = [
+let DUMMY_USERS = [
 	{
 		id: 'u1',
 		name: 'Peter',
@@ -61,40 +61,57 @@ export const getUserById = (
 export const loginUser = (req: Request, res: Response, next: NextFunction) => {
 	const { email, password } = req.body;
 
-	const targetUser = DUMMY_USERS.find(user => user.email === email)
+	const targetUser = DUMMY_USERS.find((user) => user.email === email);
 
 	if (!targetUser || targetUser.password !== password) {
-		throw new HttpError('Could not identify user - wrong credentials!', 401)
+		throw new HttpError(
+			'Could not identify user - wrong credentials!',
+			401
+		);
 	}
 
-	res.json({message: 'Login successful.'})
+	res.json({ message: 'Login successful.' });
 };
 
-export const createUser = (req: Request, res: Response, next: NextFunction) => {
+export const createUser = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	const { name, birthDate, email, password } = req.body;
 
-	const hasUser = DUMMY_USERS.find((user) => user.email === email);
-
-	if (hasUser) {
-		throw new HttpError('User with this email already exists!', 422);
+	try {
+		const hasUser = await User.find({ email: email }).exec();
+		if (hasUser) {
+			return next(new HttpError('Email already in use.', 409));
+		}
+	} catch (err) {
+		return next(
+			new HttpError('Error occurred during email validation.', 500)
+		);
 	}
 
-	const createdUser: User = {
-		id: crypto.randomUUID(),
+	const createdUser = new User({
 		name,
 		birthDate,
 		password,
 		email,
 		bio: '',
 		profilePicture: 'test',
-	};
-
-	DUMMY_USERS.push(createdUser);
-
-	res.status(201).json({
-		message: `User ${name} created!`,
-		user: createdUser,
 	});
+
+	try {
+		await createdUser.save();
+		res.status(201).json({
+			message: `User ${name} created!`,
+			user: createdUser,
+		});
+	} catch (err) {
+		if (err.code === 11000) {
+			return next(new HttpError('Email already in use.', 409));
+		}
+		return next(new HttpError('Could not create user.', 500));
+	}
 };
 
 export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
