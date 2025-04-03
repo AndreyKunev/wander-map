@@ -5,27 +5,36 @@ import { HttpError } from '../models/http-error';
 
 const createPlaceValidationChecks = [
 	check('title').trim().notEmpty().withMessage('Please provide a title.'),
-	check('description').trim()
-		.isLength({ min: 2})
-		.withMessage('Please provide a description.'),
-	check('address').trim().notEmpty().withMessage('Please provide an address.'),
+	check('description')
+		.trim()
+		.isLength({ min: 2 })
+		.withMessage('Description must be at least 2 characters.'),
+	check('address')
+		.trim()
+		.notEmpty()
+		.withMessage('Please provide an address.'),
 	check('creator').trim().notEmpty().withMessage('Creator is required.'),
 ];
 
 const updatePlaceValidationChecks = [
-	check('title').notEmpty().trim().withMessage('Please provide a title.'),
+	check('title').optional().notEmpty().trim().withMessage('Please provide a title.'),
 	check('description')
+		.optional()
 		.isLength({ min: 2 })
-		.withMessage('Description must be at least 5 characters.'),
+		.withMessage('Description must be at least 2 characters.'),
 ];
 
 const createUserValidationChecks = [
 	check('name').notEmpty().withMessage('Name is required.'),
 	check('birthDate').notEmpty().withMessage('Birth date is required.'),
-	check('birthDate').isDate({ format: "dd/mm/yyyy" }).withMessage('Not a valid date.'),
+	check('birthDate')
+		.isDate({ format: 'dd/mm/yyyy' })
+		.withMessage('Not a valid date.'),
 	check('email').normalizeEmail().isEmail().withMessage('Invalid email.'),
-	check('password').isLength({ min: 8}).withMessage('Minimum password length is 8 characters.'),
-]
+	check('password')
+		.isLength({ min: 8 })
+		.withMessage('Minimum password length is 8 characters.'),
+];
 
 const validateResults: RequestHandler = (
 	req: Request,
