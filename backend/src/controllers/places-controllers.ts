@@ -6,42 +6,6 @@ import { UserPlace } from '../types/types';
 import { getCoordinates } from '../utils/location';
 import { Place } from '../models/place';
 
-let DUMMY_PLACES = [
-	{
-		id: 'p1',
-		title: 'Empire State Building',
-		description: 'Wow!',
-		location: {
-			lat: 40.7484474,
-			lng: -73.9871516,
-		},
-		address: '20 W 34th St, New York, NY 10001',
-		creator: 'u1',
-	},
-	{
-		id: 'p2',
-		title: 'Empire State Building',
-		description: 'Wow!',
-		location: {
-			lat: 40.7484474,
-			lng: -73.9871516,
-		},
-		address: '20 W 34th St, New York, NY 10001',
-		creator: 'u2',
-	},
-	{
-		id: 'p3',
-		title: 'Empire State Building',
-		description: 'Wow!',
-		location: {
-			lat: 40.7484474,
-			lng: -73.9871516,
-		},
-		address: '20 W 34th St, New York, NY 10001',
-		creator: 'u1',
-	},
-];
-
 export const getPlaceById = async (
 	req: Request,
 	res: Response,
@@ -179,5 +143,5 @@ export const deletePlace = async (
 		);
 	}
 
-	res.status(200).json({ message: 'Place deleted' });
+	res.status(200).json({ message: 'Place deleted.' });
 };
