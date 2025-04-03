@@ -54,7 +54,7 @@ export const getPlaceById = async (
 		targetPlace = await Place.findById(placeId).exec();
 	} catch (err) {
 		return next(
-			new HttpError('Could not find place for provided id.', 500)
+			new HttpError('Could not find place with provided id.', 500)
 		);
 	}
 
@@ -77,7 +77,7 @@ export const getUserPlacesById = async (
 		targetPlaces = await Place.find({ creator: userId }).exec();
 	} catch (err) {
 		return next(
-			new HttpError('Could not find places for provided user id.', 500)
+			new HttpError('Could not find places with provided user id.', 500)
 		);
 	}
 
@@ -126,34 +126,38 @@ export const createPlace = async (
 	}
 };
 
-export const updatePlace = (
+export const updatePlace = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
+	if (!Object.keys(req.body).length) {
+		return next(new HttpError('No valid fields provided for update.', 400));
+	}
 	const placeId = req.params.placeId;
 	const { title, description } = req.body;
+	let updatedPlace;
 
-	const updatedPlace = {
-		...DUMMY_PLACES.find((place) => place.id == placeId),
-	};
+	try {
+		updatedPlace = await Place.findByIdAndUpdate(
+			placeId,
+			{
+				title,
+				description,
+			},
+			{ new: true, runValidators: true }
+		).exec();
+	} catch (err) {
+		return next(
+			new HttpError('Could not find place with provided id.', 500)
+		);
+	}
 
 	if (!updatedPlace) {
 		return next(new HttpError('No place found for provided id.', 404));
 	}
 
-	if (title) {
-		updatedPlace.title = title;
-	}
-
-	if (description) {
-		updatedPlace.description = description;
-	}
-
-	const targetIndex = DUMMY_PLACES.findIndex((place) => place.id == placeId);
-	//DUMMY_PLACES[targetIndex] = updatedPlace;
-
-	res.status(200).json({ place: updatedPlace });
+	res.status(200).json({ place: updatedPlace.toObject({ getters: true }) });
 };
 
 export const deletePlace = async (
@@ -162,13 +166,18 @@ export const deletePlace = async (
 	next: NextFunction
 ) => {
 	const placeId = req.params.placeId;
-	const targetIndex = DUMMY_PLACES.findIndex((place) => place.id === placeId);
+	let deletedPlace;
 
-	if (targetIndex === -1) {
-		return next(new HttpError('No place found for provided id.', 404));
+	try {
+		deletedPlace = await Place.findByIdAndDelete(placeId);
+		if (!deletedPlace) {
+			return next(new HttpError('No place found with provided id.', 404));
+		}
+	} catch (err) {
+		return next(
+			new HttpError('Could not delete place with provided id.', 500)
+		);
 	}
-
-	DUMMY_PLACES = DUMMY_PLACES.filter((place) => place.id != placeId);
 
 	res.status(200).json({ message: 'Place deleted' });
 };
