@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { randomUUID } from 'crypto';
 
 import { HttpError } from '../models/http-error';
-import { UserPlace } from '../types/types';
 import { getCoordinates } from '../utils/location';
 import { Place } from '../models/place';
 
