@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+
 import { HttpError } from '../models/http-error';
 import { User } from '../models/user';
 
@@ -78,10 +79,10 @@ export const createUser = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const { name, birthDate, email, password } = req.body;
+	const { name, birthDate, email, password, places } = req.body;
 
 	try {
-		const hasUser = await User.find({ email: email }).exec();
+		const hasUser = await User.findOne({ email: email }).exec();
 		if (hasUser) {
 			return next(new HttpError('Email already in use.', 409));
 		}
@@ -96,6 +97,7 @@ export const createUser = async (
 		birthDate,
 		password,
 		email,
+		places,
 		bio: '',
 		profilePicture: 'test',
 	});
@@ -103,14 +105,14 @@ export const createUser = async (
 	try {
 		await createdUser.save();
 		res.status(201).json({
-			message: `User ${name} created!`,
-			user: createdUser,
+			message: `User "${name}" created!`,
+			user: createdUser.toObject({ getters: true }),
 		});
 	} catch (err) {
 		if (err.code === 11000) {
 			return next(new HttpError('Email already in use.', 409));
 		}
-		return next(new HttpError('Could not create user.', 500));
+		return next(new HttpError('Could not create user.' + err.message, 500));
 	}
 };
 
