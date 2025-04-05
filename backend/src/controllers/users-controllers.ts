@@ -59,15 +59,24 @@ export const getUserById = (
 	res.json({ user });
 };
 
-export const loginUser = (req: Request, res: Response, next: NextFunction) => {
+export const loginUser = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	const { email, password } = req.body;
 
-	const targetUser = DUMMY_USERS.find((user) => user.email === email);
+	let existingUser;
 
-	if (!targetUser || targetUser.password !== password) {
-		throw new HttpError(
-			'Could not identify user - wrong credentials!',
-			401
+	try {
+		existingUser = await User.findOne({ email: email }).exec();
+	} catch (err) {
+		return next(new HttpError('Logging in failed.', 500));
+	}
+
+	if (!existingUser || existingUser.password !== password) {
+		return next(
+			new HttpError('Invalid credentials!', 401)
 		);
 	}
 
