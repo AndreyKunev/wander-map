@@ -33,12 +33,19 @@ let DUMMY_USERS = [
 	},
 ];
 
-export const getAllUsers = (
+export const getAllUsers = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	res.json({ users: DUMMY_USERS });
+	let users;
+
+	try {
+		users = await User.find({}, '-password').exec();
+	} catch (err) {
+		return next(new HttpError('Failed to get users.', 500));
+	}
+	res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
 export const getUserById = (
@@ -75,9 +82,7 @@ export const loginUser = async (
 	}
 
 	if (!existingUser || existingUser.password !== password) {
-		return next(
-			new HttpError('Invalid credentials!', 401)
-		);
+		return next(new HttpError('Invalid credentials!', 401));
 	}
 
 	res.json({ message: 'Login successful.' });
