@@ -104,7 +104,7 @@ export const createUser = async (
 	}
 };
 
-export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 	const userId = req.params.placeId;
 	let targetUser;
 
