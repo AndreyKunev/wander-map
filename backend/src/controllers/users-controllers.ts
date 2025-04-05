@@ -105,15 +105,19 @@ export const createUser = async (
 };
 
 export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
-	const userId = req.params.userId;
+	const userId = req.params.placeId;
+	let targetUser;
 
-	const targetIndex = DUMMY_USERS.findIndex((user) => user.id === userId);
-
-	if (targetIndex === -1) {
-		return next(new HttpError('No user found for provided id.', 404));
+	try {
+		targetUser = await User.findByIdAndDelete(userId);
+		if (!targetUser) {
+			return next(new HttpError('No user found with provided id.', 404));
+		}
+	} catch (err) {
+		return next(
+			new HttpError('Could not delete user with provided id.', 500)
+		);
 	}
 
-	DUMMY_USERS = DUMMY_USERS.filter((user) => user.id !== userId);
-
-	res.status(200).json({ message: 'User deleted' });
+	res.status(200).json({ message: 'User deleted.' });
 };
