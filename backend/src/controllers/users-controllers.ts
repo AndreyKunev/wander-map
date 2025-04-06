@@ -67,7 +67,7 @@ export const createUser = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const { name, birthDate, email, password, places } = req.body;
+	const { name, birthDate, email, password } = req.body;
 
 	try {
 		const hasUser = await User.findOne({ email: email }).exec();
@@ -85,7 +85,7 @@ export const createUser = async (
 		birthDate,
 		password,
 		email,
-		places,
+		places: [],
 		bio: '',
 		profilePicture: 'test',
 	});
@@ -104,7 +104,11 @@ export const createUser = async (
 	}
 };
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	const userId = req.params.placeId;
 	let targetUser;
 

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const userSchema = new Schema(
 	{
@@ -8,9 +8,11 @@ const userSchema = new Schema(
 		bio: { type: String, required: false },
 		birthDate: { type: String, required: true },
 		profilePicture: { type: String, required: true },
-		places: { type: String, required: true },
+		places: [
+			{ type: mongoose.Types.ObjectId, required: true, ref: 'Place' },
+		],
 	},
 	{ timestamps: true }
 );
 
-export const User = model('User', userSchema);
+export const User = mongoose.model('User', userSchema);

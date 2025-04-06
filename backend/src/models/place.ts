@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, ObjectId } from 'mongoose';
 
 const placeSchema = new Schema(
 	{
@@ -10,9 +10,9 @@ const placeSchema = new Schema(
 			lat: { type: Number, required: true },
 			lng: { type: Number, required: true },
 		},
-		creator: { type: String, required: true },
+		creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
 	},
 	{ timestamps: true }
 );
 
-export const Place = model('Place', placeSchema);
+export const Place = mongoose.model('Place', placeSchema);
