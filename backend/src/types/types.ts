@@ -1,26 +1,35 @@
+import { Types, Document } from "mongoose";
+
 export interface IHttpError extends Error {
     code: number;
 }
 
-export type UserPlace = {
-    id: string;
+export interface IUser extends Document {
+	name: string;
+	email: string;
+	bio: string;
+	password: string;
+	birthDate: Date;
+    profilePicture: string;
+	places: Types.ObjectId[];
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+//export interface UserDoc extends IUser, Document {};
+
+export interface IPlace extends Document {
     title: string;
     description: string;
-    imageUrl?: string;
+    image: string;
     address: string;
     location: {
         lat: number;
         lng: number;
     };
-    creator: string;
-};
-
-export type User = {
-    id: string,
-    name: string, 
-    bio?: string,
-    birthDate: string,
-    profilePicture: string,
-    email: string,
-    password: string
+    creator: Types.ObjectId;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
+
+//export interface PlaceDoc extends IPlace, Document {};
