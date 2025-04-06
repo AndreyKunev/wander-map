@@ -1,6 +1,8 @@
-import mongoose, { Schema, ObjectId } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const placeSchema = new Schema(
+import { IPlace } from '../types/types';
+
+const placeSchema = new Schema<IPlace>(
 	{
 		title: { type: String, required: true },
 		description: { type: String, required: true },
@@ -10,9 +12,9 @@ const placeSchema = new Schema(
 			lat: { type: Number, required: true },
 			lng: { type: Number, required: true },
 		},
-		creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+		creator: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 	},
 	{ timestamps: true }
 );
 
-export const Place = mongoose.model('Place', placeSchema);
+export const Place = model<IPlace>('Place', placeSchema);
