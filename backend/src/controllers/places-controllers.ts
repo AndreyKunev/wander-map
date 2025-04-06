@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
 
 import { HttpError } from '../models/http-error';
 import { getCoordinates } from '../utils/location';
 import { Place } from '../models/place';
+import { User } from '../models/user';
 
 export const getPlaceById = async (
 	req: Request,
@@ -80,12 +82,31 @@ export const createPlace = async (
 		creator,
 	});
 
+	let user;
+
 	try {
-		await createdPlace.save();
-		res.status(201).json({ place: createdPlace });
+		user = await User.findById(creator).exec();
+		if (!user) {
+			return next(
+				new HttpError('Could not find user with provided id.', 404)
+			);
+		}
 	} catch (err) {
 		return next(new HttpError('Creating place failed.', 500));
 	}
+
+	try {
+		const session = await mongoose.startSession();
+		session.startTransaction();
+		await createdPlace.save({ session });
+		user.places.push(createdPlace);
+		await user.save({ session });
+		await session.commitTransaction();
+	} catch (err) {
+		return next(new HttpError('Creating place failed.', 500));
+	}
+
+	res.status(201).json({ place: createdPlace });
 };
 
 export const updatePlace = async (
