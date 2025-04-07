@@ -109,7 +109,7 @@ export const deleteUser = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const userId = req.params.placeId;
+	const userId = req.params.userId;
 	let targetUser;
 
 	try {
