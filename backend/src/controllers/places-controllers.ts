@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose from 'mongoose';
 
 import { HttpError } from '../models/http-error';
 import { getCoordinates } from '../utils/location';
