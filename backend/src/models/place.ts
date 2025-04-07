@@ -1,8 +1,10 @@
 import { Schema, model } from 'mongoose';
 
-import { IPlace } from '../types/types';
+import { IPlace, PlaceModel } from '../types/types';
 
-const placeSchema = new Schema<IPlace>(
+
+
+const placeSchema = new Schema<IPlace, PlaceModel>(
 	{
 		title: { type: String, required: true },
 		description: { type: String, required: true },
@@ -17,4 +19,4 @@ const placeSchema = new Schema<IPlace>(
 	{ timestamps: true }
 );
 
-export const Place = model<IPlace>('Place', placeSchema);
+export const Place: PlaceModel = model<IPlace, PlaceModel>('Place', placeSchema);
