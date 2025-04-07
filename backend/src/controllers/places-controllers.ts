@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import mongoose from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 import { HttpError } from '../models/http-error';
 import { getCoordinates } from '../utils/location';
 import { Place } from '../models/place';
 import { User } from '../models/user';
+import { PlaceDoc, UserDoc } from '../types/types';
 
 export const getPlaceById = async (
 	req: Request,
@@ -73,7 +74,7 @@ export const createPlace = async (
 	}
 
 	// N.B. using random image for now
-	const createdPlace = new Place({
+	const createdPlace: PlaceDoc = new Place({
 		title,
 		description,
 		address,
@@ -98,11 +99,15 @@ export const createPlace = async (
 	try {
 		const session = await mongoose.startSession();
 		session.startTransaction();
+
 		await createdPlace.save({ session });
-		user.places.push(createdPlace);
+		user.places.push(createdPlace._id);
 		await user.save({ session });
+
 		await session.commitTransaction();
+		session.endSession();
 	} catch (err) {
+		console.error('Transaction error', err);
 		return next(new HttpError('Creating place failed.', 500));
 	}
 
@@ -149,17 +154,33 @@ export const deletePlace = async (
 	next: NextFunction
 ) => {
 	const placeId = req.params.placeId;
-	let deletedPlace;
+	let targetPlace;
 
 	try {
-		deletedPlace = await Place.findByIdAndDelete(placeId);
-		if (!deletedPlace) {
+		targetPlace = await Place.findById(placeId).populate<{ creator: UserDoc }>('creator').exec();
+		if (!targetPlace) {
 			return next(new HttpError('No place found with provided id.', 404));
 		}
 	} catch (err) {
 		return next(
 			new HttpError('Could not delete place with provided id.', 500)
 		);
+	}
+
+	const creator = targetPlace.creator;
+
+	try {
+		const session = await mongoose.startSession();
+		session.startTransaction();
+
+		await targetPlace.deleteOne({ session });
+		creator.places.pull(targetPlace._id);
+		await creator.save({ session });
+
+		await session.commitTransaction();
+		session.endSession();
+	} catch (err) {
+		return next(new HttpError('Deleting place failed.', 500))
 	}
 
 	res.status(200).json({ message: 'Place deleted.' });
