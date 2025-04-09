@@ -7,6 +7,7 @@ import { routes } from './routes';
 import { notFoundHandler } from './middlewares/not-found-handler';
 import { serverErrorHandler } from './middlewares/server-error-handler';
 import { logger } from './middlewares/logger';
+import { customCors } from './middlewares/custom-cors';
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ export const mongoURI: string = process.env.MONGO_URI;
 app.use(express.json());
 
 app.use(logger);
+
+app.use(customCors);
 
 app.use('/', routes);
 
