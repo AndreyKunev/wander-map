@@ -44,7 +44,7 @@ export type ButtonProps = {
 	children: ReactNode;
 };
 
-export type  ModalProps = {
+export type ModalProps = {
 	show: boolean;
 	onCancel: ReactEventHandler;
 	className?: string;
@@ -56,17 +56,16 @@ export type  ModalProps = {
 	children: ReactNode;
 	footerClass?: string;
 	footer?: ReactNode;
-}
+};
 
 export type ErrorModalProps = {
-  error?: string;
-  onClear: () => void;
-}
+	error?: string | null;
+	onClear: () => void;
+};
 
 export type LoadingSpinnerProps = {
-  asOverlay: boolean;
-}
-
+	asOverlay: boolean;
+};
 
 export type MapProps = {
 	className?: string;
@@ -131,12 +130,12 @@ export type FormState =
 			title: InputField;
 			description: InputField;
 			address?: InputField;
-	}
+	  }
 	| {
 			name?: InputField;
 			email: InputField;
 			password: InputField;
-	};
+	  };
 
 export type FormReducerState = {
 	inputs: FormState;
@@ -149,9 +148,9 @@ export type FormAction =
 			value: string;
 			isValid: boolean;
 			inputId: string;
-	}
+	  }
 	| {
 			type: 'SET_DATA';
 			inputs: FormState;
 			formIsValid: boolean;
-	};
+	  };
