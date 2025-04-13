@@ -3,6 +3,9 @@ import { FormEvent, useState, useContext, FC } from 'react';
 import Card from '../../components/Card/Card';
 import Input from '../../components/FormElements/Input/Input';
 import Button from '../../components/FormElements/Button/Button';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+
 import {
 	VALIDATOR_EMAIL,
 	VALIDATOR_MINLENGTH,
@@ -16,6 +19,8 @@ import './AuthPage.css';
 const AuthPage: FC = () => {
 	const auth = useContext(AuthContext);
 	const [isLogin, setIsLogin] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const [formState, inputHandler, setFormData] = useForm(
 		{
@@ -63,10 +68,12 @@ const AuthPage: FC = () => {
 		event.preventDefault();
 
 		if (isLogin) {
-      console.log('test');
-      
+			console.log('test');
 		} else {
-      let res;
+			let res;
+			let data;
+			setIsLoading((prevMode) => !prevMode);
+
 			try {
 				if (
 					'name' in formState.inputs &&
@@ -87,62 +94,81 @@ const AuthPage: FC = () => {
 							}),
 						}
 					);
+					data = await res.json();
 				}
 
-				const data = await res!.json();
+				if (res != undefined && !res.ok) {
+					throw new Error(data.message);
+				}
+
 				console.log(data);
+				setIsLoading((prevMode) => prevMode);
+				auth.login();
 			} catch (err) {
+				let message = 'Something went wrong.';
+
+				if (err instanceof Error) {
+					message = err.message;
+				}
+				setIsLoading((prevMode) => prevMode);
+				setError(message);
 				console.log(err);
 			}
 		}
-
-		auth.login();
 	};
 
+const errorHandler = () => {
+  setError(null);
+}
+
 	return (
-		<Card className='authentication'>
-			<form className='authentication' onSubmit={loginHandler}>
-				<div className='authentication__header'>
-					<h2>{isLogin ? 'Welcome back!' : 'Create Account'}</h2>
-				</div>
-				{!isLogin && (
+		<>
+    <ErrorModal error={error} onClear={errorHandler} />
+			<Card className='authentication'>
+				{isLoading && <LoadingSpinner asOverlay />}
+				<form className='authentication' onSubmit={loginHandler}>
+					<div className='authentication__header'>
+						<h2>{isLogin ? 'Welcome back!' : 'Create Account'}</h2>
+					</div>
+					{!isLogin && (
+						<Input
+							id='name'
+							type='text'
+							label='Name'
+							element='input'
+							validators={[VALIDATOR_REQUIRE()]}
+							errorText='Please enter a valid name.'
+							onInput={inputHandler}
+						/>
+					)}
 					<Input
-						id='name'
+						id='email'
 						type='text'
-						label='Name'
+						label='Email'
 						element='input'
-						validators={[VALIDATOR_REQUIRE()]}
-						errorText='Please enter a valid name.'
+						validators={[VALIDATOR_EMAIL()]}
+						errorText='Please enter a valid email.'
 						onInput={inputHandler}
 					/>
-				)}
-				<Input
-					id='email'
-					type='text'
-					label='Email'
-					element='input'
-					validators={[VALIDATOR_EMAIL()]}
-					errorText='Please enter a valid email.'
-					onInput={inputHandler}
-				/>
-				<Input
-					id='password'
-					type='password'
-					label='Password'
-					element='input'
-					validators={[VALIDATOR_MINLENGTH(8)]}
-					errorText='Password is invalid.'
-					onInput={inputHandler}
-				/>
-				<Button type='submit' disabled={!formState.isValid}>
-					{isLogin ? 'Login' : 'Register'}
+					<Input
+						id='password'
+						type='password'
+						label='Password'
+						element='input'
+						validators={[VALIDATOR_MINLENGTH(8)]}
+						errorText='Password is invalid.'
+						onInput={inputHandler}
+					/>
+					<Button type='submit' disabled={!formState.isValid}>
+						{isLogin ? 'Login' : 'Register'}
+					</Button>
+				</form>
+				<p>Don't have an account?</p>
+				<Button inverse onClick={switchModeHandler}>
+					{isLogin ? 'Create Account' : 'Switch to Login'}
 				</Button>
-			</form>
-			<p>Don't have an account?</p>
-			<Button inverse onClick={switchModeHandler}>
-				{isLogin ? 'Create Account' : 'Switch to Login'}
-			</Button>
-		</Card>
+			</Card>
+		</>
 	);
 };
 
