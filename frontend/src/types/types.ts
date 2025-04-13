@@ -44,7 +44,7 @@ export type ButtonProps = {
 	children: ReactNode;
 };
 
-export type ModalProps = {
+export type  ModalProps = {
 	show: boolean;
 	onCancel: ReactEventHandler;
 	className?: string;
@@ -54,9 +54,19 @@ export type ModalProps = {
 	onSubmit?: () => void;
 	contentClass?: string;
 	children: ReactNode;
-	footerClass: string;
-	footer: ReactNode;
-};
+	footerClass?: string;
+	footer?: ReactNode;
+}
+
+export type ErrorModalProps = {
+  error?: string;
+  onClear: () => void;
+}
+
+export type LoadingSpinnerProps = {
+  asOverlay: boolean;
+}
+
 
 export type MapProps = {
 	className?: string;
