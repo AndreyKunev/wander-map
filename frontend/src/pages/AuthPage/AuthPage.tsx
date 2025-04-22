@@ -117,13 +117,13 @@ const AuthPage: FC = () => {
 		}
 	};
 
-const errorHandler = () => {
-  setError(null);
-}
+	const errorHandler = () => {
+		setError(null);
+	};
 
 	return (
 		<>
-    <ErrorModal error={error} onClear={errorHandler} />
+			<ErrorModal error={error} onClear={errorHandler} />
 			<Card className='authentication'>
 				{isLoading && <LoadingSpinner asOverlay />}
 				<form className='authentication' onSubmit={loginHandler}>
