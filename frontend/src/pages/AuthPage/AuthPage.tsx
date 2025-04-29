@@ -131,19 +131,31 @@ const AuthPage: FC = () => {
 						<h2>{isLogin ? 'Welcome back!' : 'Create Account'}</h2>
 					</div>
 					{!isLogin && (
-						<Input
-							id='name'
-							type='text'
-							label='Name'
-							element='input'
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText='Please enter a valid name.'
-							onInput={inputHandler}
-						/>
+						<>
+							<Input
+								id='name'
+								type='text'
+								label='Name'
+								element='input'
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText='Please enter a valid name.'
+								onInput={inputHandler}
+							/>
+							<Input
+								id='birth-date'
+								type='date'
+								label='Birth Date'
+								element='input'
+								validators={[]}
+								placeholder='dd/mm/yyyy'
+								errorText='Please enter a valid date of birth'
+								onInput={inputHandler}
+							/>
+						</>
 					)}
 					<Input
 						id='email'
-						type='text'
+						type='email'
 						label='Email'
 						element='input'
 						validators={[VALIDATOR_EMAIL()]}
