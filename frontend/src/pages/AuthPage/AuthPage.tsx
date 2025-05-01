@@ -10,6 +10,7 @@ import {
 	VALIDATOR_EMAIL,
 	VALIDATOR_MINLENGTH,
 	VALIDATOR_REQUIRE,
+	VALIDATOR_DATE
 } from '../../utils/validators';
 import { useForm } from '../../hooks/form-hook';
 import { AuthContext } from '../../context/auth-context';
@@ -146,7 +147,7 @@ const AuthPage: FC = () => {
 								type='date'
 								label='Birth Date'
 								element='input'
-								validators={[]}
+								validators={[VALIDATOR_DATE()]}
 								placeholder='dd/mm/yyyy'
 								errorText='Please enter a valid date of birth'
 								onInput={inputHandler}
