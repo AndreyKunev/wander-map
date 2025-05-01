@@ -92,6 +92,7 @@ const AuthPage: FC = () => {
 								name: formState.inputs.name!.value,
 								email: formState.inputs.email.value,
 								password: formState.inputs.password.value,
+								birthDate: formState.inputs.birthDate.value,
 							}),
 						}
 					);
