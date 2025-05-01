@@ -67,19 +67,59 @@ const AuthPage: FC = () => {
 
 	const loginHandler = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setIsLoading((prevMode) => !prevMode);
 
 		if (isLogin) {
-			console.log('test');
+			let res;
+			let data;
+
+			try {
+				if (
+					'email' in formState.inputs &&
+					'password' in formState.inputs
+				) {
+					res = await fetch(
+						'http://localhost:3001/api/users/login',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({
+								email: formState.inputs.email.value,
+								password: formState.inputs.password.value,
+							}),
+						}
+					);
+					data = await res.json();
+				}
+
+				if (res != undefined && !res.ok) {
+					throw new Error(data.message);
+				}
+
+				setIsLoading((prevMode) => prevMode);
+				auth.login();
+			} catch (err) {
+				let message = 'Something went wrong.';
+
+				if (err instanceof Error) {
+					message = err.message;
+				}
+				setIsLoading((prevMode) => prevMode);
+				setError(message);
+				console.log(err);
+			}
 		} else {
 			let res;
 			let data;
-			setIsLoading((prevMode) => !prevMode);
 
 			try {
 				if (
 					'name' in formState.inputs &&
 					'email' in formState.inputs &&
-					'password' in formState.inputs
+					'password' in formState.inputs &&
+					'birthDate' in formState.inputs
 				) {
 					res = await fetch(
 						'http://localhost:3001/api/users/signup',
@@ -92,7 +132,7 @@ const AuthPage: FC = () => {
 								name: formState.inputs.name!.value,
 								email: formState.inputs.email.value,
 								password: formState.inputs.password.value,
-								birthDate: formState.inputs.birthDate.value,
+								birthDate: formState.inputs.birthDate!.value,
 							}),
 						}
 					);
@@ -103,7 +143,6 @@ const AuthPage: FC = () => {
 					throw new Error(data.message);
 				}
 
-				console.log(data);
 				setIsLoading((prevMode) => prevMode);
 				auth.login();
 			} catch (err) {

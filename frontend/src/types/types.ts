@@ -135,7 +135,7 @@ export type FormState =
 			name?: InputField;
 			email: InputField;
 			password: InputField;
-			birthDate: InputField;
+			birthDate?: InputField;
 	  };
 
 export type FormReducerState = {
