@@ -10,7 +10,7 @@ import './UserItem.css';
 
 const UserItem: FC<{ user: UserInfo }> = ({ user }) => {
   const avatarProps: AvatarProps = {
-    image: user.image,
+    image: user.profilePicture,
     alt: user.name,
   };
 
@@ -24,7 +24,7 @@ const UserItem: FC<{ user: UserInfo }> = ({ user }) => {
           <div className="user-item__info">
             <h2>{user.name}</h2>
             <h3>
-              {user.placeCount} {user.placeCount === 1 ? 'Wander Point' : 'Wander Points'}
+              {user.places.length} {user.places.length === 1 ? 'Wander Point' : 'Wander Points'}
             </h3>
           </div>
         </Link>

@@ -3,8 +3,13 @@ import { CSSProperties, ReactNode, MouseEvent, ReactEventHandler } from 'react';
 export type UserInfo = {
 	id: string;
 	name: string;
-	image: string;
-	placeCount: number;
+	email: string;
+	bio: string;
+	birthDate: string;
+	profilePicture: string;
+	places: string[]; 
+	createdAt?: string;
+	updatedAt?: string;
 };
 
 export type UserInfoList = UserInfo[];
