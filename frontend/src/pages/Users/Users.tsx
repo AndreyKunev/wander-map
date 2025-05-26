@@ -38,12 +38,12 @@ const Users = () => {
 
 	return (
 		<>
-      <ErrorModal error={error} onClear={errorHandler} />
-      {isLoading && (
-        <div className='center'>
-          <LoadingSpinner asOverlay/>
-        </div>
-      )}
+			<ErrorModal error={error} onClear={errorHandler} />
+			{isLoading && (
+				<div className='center'>
+					<LoadingSpinner asOverlay />
+				</div>
+			)}
 			{!isLoading && loadedUsers && <UsersList userArr={loadedUsers} />}
 		</>
 	);
