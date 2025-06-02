@@ -10,9 +10,10 @@ import {
 	VALIDATOR_EMAIL,
 	VALIDATOR_MINLENGTH,
 	VALIDATOR_REQUIRE,
-	VALIDATOR_DATE
+	VALIDATOR_DATE,
 } from '../../utils/validators';
 import { useForm } from '../../hooks/form-hook';
+import { useHttpClient } from '../../hooks/http-hook';
 import { AuthContext } from '../../context/auth-context';
 
 import './AuthPage.css';
@@ -20,8 +21,7 @@ import './AuthPage.css';
 const AuthPage: FC = () => {
 	const auth = useContext(AuthContext);
 	const [isLogin, setIsLogin] = useState(true);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
 	const [formState, inputHandler, setFormData] = useForm(
 		{
@@ -67,53 +67,31 @@ const AuthPage: FC = () => {
 
 	const loginHandler = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		setIsLoading((prevMode) => !prevMode);
 
 		if (isLogin) {
-			let res;
-			let data;
-
 			try {
 				if (
 					'email' in formState.inputs &&
 					'password' in formState.inputs
 				) {
-					res = await fetch(
+					await sendRequest(
 						'http://localhost:3001/api/users/login',
+						'POST',
+						JSON.stringify({
+							email: formState.inputs.email.value,
+							password: formState.inputs.password.value,
+						}),
 						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify({
-								email: formState.inputs.email.value,
-								password: formState.inputs.password.value,
-							}),
+							'Content-Type': 'application/json',
 						}
 					);
-					data = await res.json();
 				}
 
-				if (res != undefined && !res.ok) {
-					throw new Error(data.message);
-				}
-
-				setIsLoading((prevMode) => prevMode);
 				auth.login();
-			} catch (err) {
-				let message = 'Something went wrong.';
-
-				if (err instanceof Error) {
-					message = err.message;
-				}
-				setIsLoading((prevMode) => prevMode);
-				setError(message);
-				console.log(err);
+			} catch (error) {
+				console.log(error);
 			}
 		} else {
-			let res;
-			let data;
-
 			try {
 				if (
 					'name' in formState.inputs &&
@@ -121,50 +99,31 @@ const AuthPage: FC = () => {
 					'password' in formState.inputs &&
 					'birthDate' in formState.inputs
 				) {
-					res = await fetch(
+					await sendRequest(
 						'http://localhost:3001/api/users/signup',
+						'POST',
+						JSON.stringify({
+							name: formState.inputs.name!.value,
+							email: formState.inputs.email.value,
+							password: formState.inputs.password.value,
+							birthDate: formState.inputs.birthDate!.value,
+						}),
 						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify({
-								name: formState.inputs.name!.value,
-								email: formState.inputs.email.value,
-								password: formState.inputs.password.value,
-								birthDate: formState.inputs.birthDate!.value,
-							}),
+							'Content-Type': 'application/json',
 						}
 					);
-					data = await res.json();
 				}
 
-				if (res != undefined && !res.ok) {
-					throw new Error(data.message);
-				}
-
-				setIsLoading((prevMode) => prevMode);
 				auth.login();
 			} catch (err) {
-				let message = 'Something went wrong.';
-
-				if (err instanceof Error) {
-					message = err.message;
-				}
-				setIsLoading((prevMode) => prevMode);
-				setError(message);
 				console.log(err);
 			}
 		}
 	};
 
-	const errorHandler = () => {
-		setError(null);
-	};
-
 	return (
 		<>
-			<ErrorModal error={error} onClear={errorHandler} />
+			<ErrorModal error={error} onClear={clearError} />
 			<Card className='authentication'>
 				{isLoading && <LoadingSpinner asOverlay />}
 				<form className='authentication' onSubmit={loginHandler}>

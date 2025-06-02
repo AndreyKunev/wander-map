@@ -36,6 +36,7 @@ export const useHttpClient = () => {
 				if (err instanceof Error) {
 					setError(err.message);
 					console.error('HTTP Error: ', err.message);
+                    throw err;
 				}
 			} finally {
 				activeHttpRequests.current = activeHttpRequests.current.filter(
