@@ -18,6 +18,7 @@ const formReducer = (state: FormReducerState, action: FormAction) => {
   let formIsValid;
 
   switch (action.type) {
+    // TODO - remove as unknown
     case 'INPUT_CHANGE':
       formIsValid = true;
       for (const inputId in state.inputs) {
@@ -29,7 +30,7 @@ const formReducer = (state: FormReducerState, action: FormAction) => {
         } else {
           formIsValid =
             formIsValid &&
-            (state.inputs[inputId as keyof FormState] as InputField)!.isValid;
+            (state.inputs[inputId as keyof FormState] as unknown as InputField)!.isValid;
         }
       }
       return {
