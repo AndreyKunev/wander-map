@@ -1,5 +1,12 @@
 import { CSSProperties, ReactNode, MouseEvent, ReactEventHandler } from 'react';
 
+export interface AuthContextType {
+	isLoggedIn: boolean;
+	userId: string | null;
+	login: (userId: string) => void;
+	logout: () => void;
+}
+
 export type UserInfo = {
 	id: string;
 	name: string;
@@ -7,7 +14,7 @@ export type UserInfo = {
 	bio: string;
 	birthDate: string;
 	profilePicture: string;
-	places: string[]; 
+	places: string[];
 	createdAt?: string;
 	updatedAt?: string;
 };
@@ -130,18 +137,22 @@ export type InputField = {
 	isValid: boolean;
 };
 
-export type FormState =
-	| {
-			title: InputField;
-			description: InputField;
-			address?: InputField;
-	  }
-	| {
-			name?: InputField;
-			email: InputField;
-			password: InputField;
-			birthDate?: InputField;
-	  };
+export type PlaceFormState = {
+	type: 'place';
+	title: InputField;
+	description: InputField;
+	address?: InputField;
+};
+
+export type UserFormState = {
+	type: 'user';
+	name?: InputField;
+	email: InputField;
+	password: InputField;
+	birthDate?: InputField;
+};
+
+export type FormState = PlaceFormState | UserFormState;
 
 export type FormReducerState = {
 	inputs: FormState;
