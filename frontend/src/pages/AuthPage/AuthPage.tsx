@@ -17,6 +17,7 @@ import { useHttpClient } from '../../hooks/http-hook';
 import { AuthContext } from '../../context/auth-context';
 
 import './AuthPage.css';
+import { isUserFormState } from '../../utils/formGuards';
 
 const AuthPage: FC = () => {
 	const auth = useContext(AuthContext);
@@ -25,6 +26,7 @@ const AuthPage: FC = () => {
 
 	const [formState, inputHandler, setFormData] = useForm(
 		{
+			type: 'user',
 			email: {
 				value: '',
 				isValid: false,
@@ -38,27 +40,32 @@ const AuthPage: FC = () => {
 	);
 
 	const switchModeHandler = () => {
-		if (!isLogin) {
-			if ('email' in formState.inputs && 'password' in formState.inputs) {
-				setFormData(
-					{
-						...formState.inputs,
-						name: undefined,
-					},
-					formState.inputs.email.isValid &&
-						formState.inputs.password.isValid
-				);
-			}
-		} else {
+		if (isLogin) {
 			setFormData(
 				{
-					...formState.inputs,
-					name: {
+					type: 'user',
+					name: { value: '', isValid: false },
+					email: { value: '', isValid: false },
+					password: { value: '', isValid: false },
+					birthDate: { value: '', isValid: false },
+				},
+				false
+			);
+		} else if (isUserFormState(formState.inputs)) {
+			setFormData(
+				{
+					type: 'user',
+					email: formState.inputs.email || {
+						value: '',
+						isValid: false,
+					},
+					password: formState.inputs.password || {
 						value: '',
 						isValid: false,
 					},
 				},
-				false
+				formState.inputs.email?.isValid &&
+					formState.inputs.password?.isValid
 			);
 		}
 
@@ -67,54 +74,43 @@ const AuthPage: FC = () => {
 
 	const loginHandler = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		let data;
 
-		if (isLogin) {
+		if (isLogin && isUserFormState(formState.inputs)) {
 			try {
-				if (
-					'email' in formState.inputs &&
-					'password' in formState.inputs
-				) {
-					await sendRequest(
-						'http://localhost:3001/api/users/login',
-						'POST',
-						JSON.stringify({
-							email: formState.inputs.email.value,
-							password: formState.inputs.password.value,
-						}),
-						{
-							'Content-Type': 'application/json',
-						}
-					);
-				}
+				data = await sendRequest(
+					'http://localhost:3001/api/users/login',
+					'POST',
+					JSON.stringify({
+						email: formState.inputs.email.value,
+						password: formState.inputs.password.value,
+					}),
+					{
+						'Content-Type': 'application/json',
+					}
+				);
 
-				auth.login();
+				auth.login(data.user.id);
 			} catch (error) {
 				console.log(error);
 			}
-		} else {
+		} else if (isUserFormState(formState.inputs)) {
 			try {
-				if (
-					'name' in formState.inputs &&
-					'email' in formState.inputs &&
-					'password' in formState.inputs &&
-					'birthDate' in formState.inputs
-				) {
-					await sendRequest(
-						'http://localhost:3001/api/users/signup',
-						'POST',
-						JSON.stringify({
-							name: formState.inputs.name!.value,
-							email: formState.inputs.email.value,
-							password: formState.inputs.password.value,
-							birthDate: formState.inputs.birthDate!.value,
-						}),
-						{
-							'Content-Type': 'application/json',
-						}
-					);
-				}
+				data = await sendRequest(
+					'http://localhost:3001/api/users/signup',
+					'POST',
+					JSON.stringify({
+						name: formState.inputs.name!.value,
+						email: formState.inputs.email.value,
+						password: formState.inputs.password.value,
+						birthDate: formState.inputs.birthDate!.value,
+					}),
+					{
+						'Content-Type': 'application/json',
+					}
+				);
 
-				auth.login();
+				auth.login(data.user.id);
 			} catch (err) {
 				console.log(err);
 			}
