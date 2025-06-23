@@ -12,8 +12,10 @@ import { useHttpClient } from '../../hooks/http-hook';
 import { isPlaceFormState } from '../../utils/formGuards';
 
 import './NewPlace.css';
+import { useNavigate } from 'react-router-dom';
 
 const NewPlace: FC = () => {
+	const navigate = useNavigate();
 	const auth = useContext(AuthContext);
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 	const [formState, inputHandler] = useForm(
@@ -51,7 +53,8 @@ const NewPlace: FC = () => {
 					}),
 					{'Content-Type': 'application/json'}
 				);
-				// TODO - redirect after submitting new place
+				
+				navigate('/');
 			} catch (err) {
 				console.log(err);
 			}
