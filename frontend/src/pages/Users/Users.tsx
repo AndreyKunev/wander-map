@@ -5,10 +5,11 @@ import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 import { useHttpClient } from '../../hooks/http-hook';
+import { UserInfo } from '../../types/types';
 
 const Users = () => {
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
-	const [loadedUsers, setLoadedUsers] = useState([]);
+	const [loadedUsers, setLoadedUsers] = useState<UserInfo[]>([]);
 
 	useEffect(() => {
 		const getUsers = async () => {
@@ -16,8 +17,9 @@ const Users = () => {
 				const data = await sendRequest(
 					'http://localhost:3001/api/users/'
 				);
-
-				setLoadedUsers(data.users);
+				if (data && data.users) {
+					setLoadedUsers(data.users);
+				}
 			} catch (err) {
 				if (err instanceof Error) {
 					console.log(err.message);
